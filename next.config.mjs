@@ -11,7 +11,7 @@ const nextConfig = {
     domains: ["localhost", "via.placeholder.com", "tse1.mm.bing.net"],
   },
   experimental: {
-    optimizeCss: false, // disable LightningCSS, fallback to PostCSS
+    optimizeCss: false, // disable LightningCSS
   },
 };
 
