@@ -1,0 +1,140 @@
+.pageWrapper {
+  min-height: 100vh;
+  padding: 20px;
+  background: var(--background);
+  color: var(--text-primary);
+  display: flex;
+
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  background: var(--surface);
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* Back button */
+.backBtn {
+  background: none;
+  border: none;
+  color: var(--accent-gold);
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: color 0.25s ease;
+}
+.backBtn:hover {
+  color: var(--accent-hover);
+}
+
+/* Progress Bar */
+.progressBar {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.stepWrapper {
+  position: relative;
+  flex: 1;
+  text-align: center;
+}
+
+.circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0 auto 8px;
+  position: relative; /* ✅ add this */
+  z-index: 2; /* ✅ keep above line */
+}
+
+.line {
+  position: absolute;
+  top: 18px;
+  left: 0; /* ✅ anchor to left, not 50% */
+  right: 0; /* ✅ full width of step */
+  height: 4px;
+  background: var(--border);
+  z-index: 0; /* ✅ push behind the circle */
+}
+
+.activeCircle {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+}
+
+.label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* connecting line */
+
+.lineActive {
+  background: var(--accent-gold);
+}
+.lineDelivered {
+  background: #22c55e; /* success green */
+}
+
+/* Order details box */
+.details {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--surface);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.backWrapper {
+  width: 100%;
+  max-width: 720px; /* same as your .card */
+  margin: 0 auto 16px; /* centers wrapper + adds space */
+  display: flex;
+  justify-content: flex-start;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: var(--accent-gold);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+}
+
+.backBtn:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}

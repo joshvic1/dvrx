@@ -1,0 +1,108 @@
+/* Toast.module.css */
+
+/* Container for all toasts */
+.toastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+  pointer-events: none; /* clicks pass through container */
+}
+
+/* Toast card */
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  border-radius: 14px;
+  min-width: 260px;
+  max-width: 320px;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  pointer-events: auto; /* allow clicks */
+  transform: translateX(100%);
+  opacity: 0;
+  animation: slideIn 0.4s forwards, fadeOut 0.4s ease-out forwards;
+  animation-delay: 0s, calc(var(--duration) - 0.4s);
+  position: relative;
+}
+
+/* Colored indicators for type */
+.toast.success {
+  background: linear-gradient(135deg, #0c6d2c, #1a7968);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, #f85032, #e73827);
+}
+
+.toast.info {
+  background: linear-gradient(135deg, #2196f3, #21cbf3);
+}
+
+/* Optional colored dot indicator */
+.toast::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.toast.success::before {
+  background-color: #0f9d58;
+}
+
+.toast.error::before {
+  background-color: #d32f2f;
+}
+
+.toast.info::before {
+  background-color: #1976d2;
+}
+
+/* Close button */
+.toast .closeBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 12px;
+  transition: transform 0.2s;
+}
+
+.toast .closeBtn:hover {
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

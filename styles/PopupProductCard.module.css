@@ -1,0 +1,121 @@
+.card {
+  background: var(--surface);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px var(--shadow);
+}
+
+/* Image section clickable */
+.imageWrapper {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  background: var(--background-alt);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  display: block;
+}
+
+.imageWrapper img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Info below image */
+.info {
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+/* Price = Highlight */
+.price {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: red;
+  margin-bottom: 0.3rem;
+}
+[data-theme="dark"] .price {
+  color: #f28b82; /* lighter red for dark mode */
+}
+
+/* Name = secondary */
+.name {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
+  text-decoration: none;
+}
+
+.name:hover {
+  color: var(--text-primary);
+}
+
+/* Add to cart button */
+.addBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-gold);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.addBtn:hover {
+  background: var(--accent-hover);
+}
+
+/* Qty counter */
+.qtyCounter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.qtyCounter button {
+  background: var(--background-alt);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.qtyCounter button:hover {
+  background: var(--surface);
+}
+
+.qtyCounter button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.qtyCounter span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}

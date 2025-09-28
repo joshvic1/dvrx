@@ -1,0 +1,244 @@
+/* Main Layout */
+.main {
+  padding: 20px 70px; /* reduced padding for 90% screen look */
+
+  margin: auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-primary);
+  background: var(--background);
+}
+
+/* Section Header */
+.sectionHeader {
+  padding: 8px 16px;
+  margin-bottom: 15px;
+  border: 1px solid var(--accent-gold);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.sectionBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-primary);
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.sectionBtn:hover {
+  background: var(--button-hover);
+  color: var(--button-hover-text);
+}
+
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem; /* smaller for 90% view */
+  font-weight: 700;
+}
+
+/* Subcategories Scroll */
+.subcategoryScroll {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  overflow-x: visible; /* allow scaling to extend */
+}
+.subcategoryScroll::-webkit-scrollbar {
+  display: none;
+}
+.subcategoryBtn {
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--accent-gold);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  transform: scale(0.95); /* smaller by default */
+}
+.subcategoryBtn:hover {
+  background: var(--accent-gold);
+  color: #fff;
+}
+.activeSubcategory {
+  background: var(--accent-gold);
+  color: #fff;
+  font-weight: 600;
+  transform: scale(1.2); /* bigger when active */
+}
+
+/* Products Grid */
+.productsSection {
+  flex: 1;
+}
+
+.productGrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Skeleton Loader */
+.loadingSkeleton {
+  height: 180px;
+  border-radius: 12px;
+  background: rgba(200, 200, 200, 0.2);
+  animation: pulse 1.2s infinite ease-in-out;
+}
+[data-theme="dark"] .loadingSkeleton {
+  background: rgba(255, 255, 255, 0.05);
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Filter Popup Modal */
+.filterModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000000;
+}
+.filterModal {
+  background: var(--background);
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 60%;
+  max-width: 300px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.25s ease;
+}
+.filterModal h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.filterModal .filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.filterModal .filterGroup label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+.filterModal .priceInputs {
+  display: flex;
+  gap: 10px;
+}
+.filterModal .priceInputs input {
+  flex: 1;
+  padding: 8px;
+  width: 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: center;
+}
+.filterModal select {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--text-primary);
+}
+.filterModal .modalBtns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.filterModal .modalBtns button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filterModal .cancelBtn {
+  background: var(--border);
+  color: var(--text-primary);
+}
+.filterModal .applyBtn {
+  background: var(--accent-gold);
+  color: #fff;
+}
+.filterModal .cancelBtn:hover {
+  opacity: 0.8;
+}
+.filterModal .applyBtn:hover {
+  opacity: 0.9;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark Glass Effect */
+[data-theme="dark"] .productCardModern,
+[data-theme="dark"] .sectionHeader {
+  background: rgba(44, 44, 44, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197, 165, 114, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .productGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  /* Backgrounds */
+  --background: #ffffff; /* pure clean background */
+  --surface: #f8f5f0; /* soft beige for cards/sections */
+  --background-alt: #f1ebe2; /* subtle beige variant */
+
+  /* Text */
+  --text-primary: #1a1a1a; /* deep, premium black */
+  --text-secondary: #555555; /* softer gray for subtext */
+  --text-muted: #777777; /* optional muted text */
+
+  /* Accents */
+  --accent-gold: #c5a572; /* gold-beige accent */
+  --accent-hover: #b8925a; /* richer gold on hover */
+
+  /* Borders / Dividers */
+  --border: #e5dfd3; /* light beige-gray border */
+
+  /* Shadows */
+  --shadow: rgba(0, 0, 0, 0.08);
+  --accent-gold: #c5a572;
+  --accent-gold-rgb: 197, 165, 114;
+}
+
+[data-theme="dark"] {
+  /* Backgrounds */
+  --background: #1a1a1a; /* dark premium background */
+  --surface: #222222; /* darker card/section */
+  --background-alt: #2c2c2c; /* slightly lighter section */
+
+  /* Text */
+  --text-primary: #f9f6f1; /* soft beige text */
+  --text-secondary: #cccccc; /* muted gray subtext */
+  --text-muted: #aaaaaa; /* lighter muted text */
+
+  /* Accents */
+  --accent-gold: #c5a572; /* gold-beige accent */
+  --accent-hover: #d1b07e; /* brighter gold hover */
+
+  /* Borders / Dividers */
+  --border: #3a3a3a; /* subtle divider */
+
+  /* Shadows */
+  --shadow: rgba(0, 0, 0, 0.5);
+  --accent-gold: #c5a572;
+  --accent-gold-rgb: 197, 165, 114;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+/* styles/globals.css */
+#nprogress .bar {
+  background: linear-gradient(90deg, #e63946, #f1c40f) !important;
+  height: 4px !important;
+  z-index: 9999 !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #e63946, 0 0 5px #f1c40f !important;
+}

@@ -1,0 +1,190 @@
+/* ===== Cart Page Layout ===== */
+.container {
+  margin: 0 auto;
+  padding: 32px 250px;
+  background-color: var(--background);
+}
+
+/* ===== Title ===== */
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+/* ===== Empty Cart ===== */
+.emptyCart {
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 20px;
+}
+.emptyCart a {
+  color: var(--accent-gold);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ===== Cart Item ===== */
+.cartItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.productImage {
+  flex: 0 0 70px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.productDetails {
+  flex: 1;
+}
+
+.productName {
+  font-size: 0.95rem;
+  margin: 0 0 4px;
+  color: var(--text-primary);
+}
+
+.productPrice {
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+/* ===== Quantity Input ===== */
+.qtyInput {
+  width: 50px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* ===== Remove Button ===== */
+.removeBtn {
+  background: transparent;
+  border: none;
+  color: crimson;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.removeBtn:hover {
+  color: darkred;
+}
+
+/* ===== Cart Total ===== */
+.total {
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 16px;
+  color: var(--text-primary);
+}
+
+/* ===== Checkout Button ===== */
+.checkoutWrapper {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.checkoutBtn {
+  background: var(--accent-gold);
+  color: #fff;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.checkoutBtn:hover {
+  background: var(--accent-hover);
+}
+
+/* ===== Promo Section ===== */
+.promoWrapper {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.promoInput {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.applyPromoBtn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.applyPromoBtn:hover {
+  background: #333;
+}
+.totalWrapper {
+  margin-top: 20px;
+  padding: 15px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.totalLine {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.totalLineDiscount {
+  display: flex;
+  justify-content: space-between;
+  color: #d32f2f;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.totalLineBold {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+.checkoutWrapper {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.checkoutBtn {
+  background: #ffb300;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.checkoutBtn:hover {
+  background: #e6a300;
+}
+.productVariant {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 4px;
+}

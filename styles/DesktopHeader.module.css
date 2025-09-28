@@ -1,0 +1,641 @@
+/* ---------------- HEADER CONTAINER ---------------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 50px; /* reduced from 10px 70px */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .header {
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(197, 165, 114, 0.35);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------------- LOGO ---------------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* reduced */
+  font-family: "Playfair Display", serif;
+  font-size: 18px; /* reduced */
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.logoIcon {
+  color: var(--accent-gold);
+  transition: transform 0.3s ease;
+}
+.logo:hover .logoIcon {
+  transform: rotate(10deg) scale(1.05); /* smaller scale */
+}
+
+/* ---------------- NAVIGATION ---------------- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* reduced */
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdownBtn {
+  background: none;
+  border: none;
+  font-weight: 700;
+  font-size: 12.5px; /* smaller */
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.dropdownBtn:hover {
+  color: var(--accent-gold);
+}
+
+/* ---------------- DROPDOWN BASE ---------------- */
+.dropdownMenu,
+.megaMenu {
+  position: absolute;
+  top: 190%;
+  left: 0;
+  background: var(--background);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px); /* slightly smaller */
+  transition: all 0.25s ease;
+  z-index: 100;
+}
+
+.showMenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Normal dropdown */
+.dropdownMenu {
+  min-width: 160px; /* slightly smaller */
+  padding: 8px 0;
+}
+.dropdownItem {
+  display: block;
+  padding: 6px 10px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 12.5px; /* smaller */
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.dropdownItem:hover {
+  background: var(--surface);
+  color: var(--accent-gold);
+}
+
+/* Mega Menu */
+.megaMenu {
+  min-width: 500px; /* smaller */
+  padding: 12px;
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  z-index: 300;
+}
+
+/* Mega Menu Columns */
+.megaMenuCategories {
+  width: 130px; /* smaller */
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 3px; /* reduced */
+  padding-right: 6px;
+}
+[data-theme="dark"] .megaMenuCategories {
+  color: #fff;
+}
+.megaCategoryItem {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+.megaCategoryItem:hover {
+  background: var(--accent-gold);
+  color: var(--text-primary-inverse);
+  border-radius: 10px;
+}
+.activeCategory {
+  background: var(--accent-gold);
+  color: var(--text-primary-inverse);
+}
+
+.megaMenuSubcategories {
+  flex: 1;
+  padding-left: 12px; /* smaller */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; /* smaller */
+}
+.subcategoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 4px; /* smaller */
+  border-radius: 6px;
+  font-size: 12px; /* smaller */
+  color: var(--text-primary);
+}
+.subcategoryItem img {
+  width: 56px; /* smaller */
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 4px; /* reduced */
+}
+.subcategoryItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px var(--shadow);
+  background: var(--background-alt);
+}
+
+/* Arrows */
+.ordersMenu::before,
+.accountMenu::before,
+.megaMenu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent var(--background) transparent;
+  filter: drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.08));
+}
+.ordersMenu::before {
+  left: 28px;
+}
+.accountMenu::before {
+  left: 36px;
+}
+.megaMenu::before {
+  left: 45px;
+}
+
+/* SEARCH BAR */
+.searchWrapper {
+  position: relative;
+  flex: 1;
+  max-width: 280px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--background);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+[data-theme="dark"] .searchWrapper {
+  border: 1px solid rgba(197, 165, 114, 0.35);
+}
+.searchWrapper:focus-within {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.2);
+}
+.searchWrapper input {
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+  font-size: 13.5px;
+  color: var(--text-primary);
+}
+.searchIcon {
+  color: var(--accent-gold);
+  font-size: 16px;
+}
+.searchDropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: var(--background);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 300;
+  animation: fadeIn 0.2s ease;
+}
+.searchItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background 0.2s ease;
+  font-size: 13px;
+}
+.searchItem img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+/* ---------------- CART ---------------- */
+.cartWrapper {
+  display: flex;
+  align-items: center;
+}
+.cartBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 15px;
+  font-weight: bold;
+  background: var(--accent-gold);
+  color: var(--background);
+  border-radius: 6px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.cartBtn:hover {
+  background: black;
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .cartBtn:hover {
+  background: var(--accent-hover);
+}
+.cartCount {
+  font-size: 10px;
+  padding: 1px 4px;
+  background-color: #fff;
+  border-radius: 50%;
+  color: black;
+}
+[data-theme="dark"] .cartCount {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+.cartCount:hover {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+.cartPrice {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+/* ---------------- THEME TOGGLE ---------------- */
+.themeToggle {
+  font-size: 14px;
+  padding: 4px;
+  color: var(--text-primary);
+}
+
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Dropdown styling */
+
+/* Notification wrapper */
+.notificationsWrapper {
+  position: relative;
+  margin-left: 20px;
+}
+
+/* Bell button */
+.bellBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+  color: var(--text-primary);
+}
+
+.bellBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Unread count badge */
+.notificationCount {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #d93025; /* red */
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 50%;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.notificationsDropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  width: 340px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: #fff;
+
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  padding: 10px 0;
+}
+[data-theme="dark"] .notificationsDropdown {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Each notification row */
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 15px;
+  gap: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.notificationItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Badge for type */
+.notificationBadge {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 3px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.type-info {
+  background: #e6f0ff;
+  color: #0052cc;
+}
+.type-success {
+  background: #e6f9ed;
+  color: #0b8457;
+}
+.type-warning {
+  background: #fff4e5;
+  color: #b76e00;
+}
+.type-error {
+  background: #ffe6e6;
+  color: #d93025;
+}
+
+/* Content */
+.notificationContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notificationMessage {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.notificationTime {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+/* ---------------- RESPONSIVE HEADER ---------------- */
+@media (max-width: 768px) {
+  .header {
+    padding: 8px 16px;
+  }
+
+  /* Logo smaller */
+  .logo {
+    font-size: 16px;
+  }
+  .logoIcon {
+    font-size: 22px;
+  }
+
+  /* Hide desktop nav */
+  .nav {
+    display: none;
+  }
+
+  /* Search bar takes full width below */
+  .searchWrapper {
+    max-width: 100%;
+    width: 100%;
+    margin: 8px 0;
+    order: 2; /* move search under logo/icons */
+  }
+
+  /* Cart + theme + notifications + menu icon row */
+  .headerTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Cart button simplified (just icon + badge) */
+  .cartBtn {
+    padding: 6px;
+    border-radius: 50%;
+    background: none;
+    color: var(--text-primary);
+    position: relative;
+  }
+  .cartPrice {
+    display: none;
+  }
+
+  /* Cart count badge floats */
+  .cartCount {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
+
+  /* Notifications simplified */
+  .notificationsWrapper {
+    margin-left: 0;
+  }
+
+  /* Hide dropdown arrows on mobile */
+  .dropdownBtn svg {
+    display: none;
+  }
+}
+/* ---------------- RESPONSIVE HEADER ---------------- */
+
+/* Tablet (up to 1024px) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 8px 24px; /* reduce side padding */
+    position: sticky;
+  }
+
+  .nav {
+    gap: 12px;
+  }
+
+  .dropdownBtn {
+    font-size: 12px;
+  }
+
+  .megaMenu {
+    min-width: 420px; /* shrink mega menu */
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .megaMenuCategories {
+    width: 110px;
+  }
+
+  .megaMenuSubcategories {
+    grid-template-columns: repeat(2, 1fr); /* reduce cols */
+    gap: 8px;
+  }
+
+  .searchWrapper {
+    max-width: 220px;
+  }
+}
+
+/* Mobile & Small Tablets (up to 768px) */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 16px;
+    gap: 8px;
+  }
+
+  /* Header top row with logo + icons */
+  .headerTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Logo smaller */
+  .logo {
+    font-size: 15px;
+  }
+  .logoIcon {
+    font-size: 20px;
+  }
+
+  /* Hide desktop nav completely */
+  .nav {
+    display: none;
+  }
+
+  /* Search bar full width below */
+  .searchWrapper {
+    width: 100%;
+    max-width: 100%;
+    order: 2;
+    margin-top: 6px;
+  }
+
+  /* Cart button simplified */
+  .cartBtn {
+    padding: 6px;
+    border-radius: 50%;
+    background: none;
+    color: var(--text-primary);
+    position: relative;
+  }
+  .cartPrice {
+    display: none;
+  }
+  .cartCount {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
+
+  /* Notifications simplified */
+  .notificationsWrapper {
+    margin-left: 0;
+  }
+
+  /* Hide dropdown arrows on mobile */
+  .dropdownBtn svg {
+    display: none;
+  }
+
+  /* Mega menu and dropdowns should fill screen width if triggered */
+  .dropdownMenu,
+  .megaMenu {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .megaMenu {
+    flex-direction: column;
+    min-width: 100%;
+  }
+  .megaMenuCategories {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .megaMenuSubcategories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,0 +1,92 @@
+.alsoLikeSection {
+  margin-top: 3rem;
+  padding: 1rem 0;
+}
+
+.alsoLikeTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.alsoLikeGrid {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0.5rem 2rem 1rem;
+}
+
+.alsoLikeGrid::-webkit-scrollbar {
+  display: none; /* hide scrollbar */
+}
+
+/* Wrapper around each ProductCard */
+.alsoLikeGrid > div {
+  flex: 0 0 50%; /* 2 cards per row on mobile */
+  max-width: 50%;
+}
+
+@media (min-width: 768px) {
+  .alsoLikeGrid > div {
+    flex: 0 0 33.33%; /* 3 cards per row on tablet */
+    max-width: 33.33%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .alsoLikeGrid > div {
+    flex: 0 0 20%; /* 5 cards per row on desktop */
+    max-width: 25%;
+  }
+}
+
+/* Scroll buttons */
+.scrollBtnLeft,
+.scrollBtnRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+[data-theme="dark"] .scrollBtnLeft {
+  background: rgba(30, 30, 30, 0.95);
+}
+[data-theme="dark"] .scrollBtnRight {
+  background: rgba(30, 30, 30, 0.95);
+}
+
+.scrollBtnLeft:hover,
+.scrollBtnRight:hover {
+  background: #f8f8f8;
+  transform: translateY(-50%) scale(1.05);
+}
+[data-theme="dark"] .scrollBtnLeft:hover,
+[data-theme="dark"] .scrollBtnRight:hover {
+  background: #3a3a3a;
+}
+
+.scrollBtnLeft {
+  left: -16px;
+}
+
+.scrollBtnRight {
+  right: -16px;
+}

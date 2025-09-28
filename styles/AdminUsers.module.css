@@ -1,0 +1,284 @@
+.container {
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #111827;
+}
+
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1 1 320px;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease;
+}
+.search:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn {
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.btn:hover {
+  background: #f3f4f6;
+}
+.primary {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+}
+.primary:hover {
+  background: #1d4ed8;
+}
+.danger {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+}
+.danger:hover {
+  background: #b91c1c;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+.table th,
+.table td {
+  padding: 0.9rem 0.75rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+.table th {
+  background: #f3f4f6;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+.table tr {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.table tr:hover {
+  background: #f9fafb;
+}
+.table td {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+}
+.avatarPlaceholder {
+  width: 42px;
+  height: 42px;
+  background: #e5e7eb;
+  border-radius: 50%;
+}
+
+.card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #111827;
+}
+.card p {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+}
+.card button {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+}
+.card button:hover {
+  background: #1d4ed8;
+}
+
+.role {
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.admin {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.customer {
+  background: #fef3c7;
+  color: #92400e;
+}
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ---- Modal Overlay ---- */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* ---- Modal Box ---- */
+.modal {
+  width: 95%;
+  max-width: 800px;
+  max-height: 85vh; /* fixed height */
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Scrollable Content ---- */
+.modalContent {
+  overflow-y: auto;
+  flex: 1;
+  margin-top: 1rem;
+  padding-right: 0.5rem;
+}
+
+/* ---- Modal Header ---- */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+}
+.modalHeader h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s;
+}
+.closeBtn:hover {
+  color: #111827;
+}
+
+/* ---- Orders Table ---- */
+.ordersTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.ordersTable th,
+.ordersTable td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.ordersTable th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.ordersTable tr:hover {
+  background: #f3f4f6;
+}
+
+/* ---- Status Badge ---- */
+.status {
+  padding: 0.25rem 0.65rem;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+.status.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+.status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.pagination button {
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pagination button:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

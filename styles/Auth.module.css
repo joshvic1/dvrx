@@ -1,0 +1,166 @@
+.authContainer {
+  max-width: 450px; /* was 400px */
+  width: 90%; /* allow it to grow a bit on smaller screens */
+  padding: 50px 40px; /* was 40px 30px */
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 6px 18px var(--shadow);
+  text-align: center;
+  transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.authContainer:hover {
+  transform: translateY(-3px);
+}
+
+.authContainer h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.authForm input {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background: var(--background-alt);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease,
+    color 0.3s ease;
+}
+
+.authForm input:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 6px var(--accent-gold);
+}
+
+.authForm button {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--accent-gold);
+  color: var(--text-primary);
+  transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+.authForm button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.authForm button:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
+
+.authExtra {
+  margin-top: 15px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.authExtra a {
+  color: var(--accent-gold);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.authExtra a:hover {
+  color: var(--accent-hover);
+}
+
+/* Inline green alert for already logged in */
+.inlineToastSuccess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #d4edda; /* optional: theme later */
+  color: #155724;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.goShoppingBtn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745; /* optional: theme later */
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.goShoppingBtn:hover {
+  background-color: #218838;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive for small screens */
+@media (max-width: 500px) {
+  .authContainer {
+    margin: 30px 20px;
+    padding: 30px 20px;
+  }
+
+  .authContainer h2 {
+    font-size: 22px;
+  }
+
+  .authForm input {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .authForm button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+.disabledBtn {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.inputError {
+  color: #e74c3c; /* red for errors */
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+.authPageWrapper {
+  display: flex;
+  justify-content: center; /* horizontally center */
+  align-items: center; /* vertically center */
+  min-height: 100vh; /* full viewport height */
+  background: var(--background); /* theme background */
+  padding: 20px;
+}

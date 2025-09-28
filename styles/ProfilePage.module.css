@@ -1,0 +1,351 @@
+.container {
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--background); /* themed page background */
+  color: var(--text-primary); /* themed text */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.card {
+  max-width: 900px;
+  margin: auto;
+  background-color: var(--surface); /* themed card bg */
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 20px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.profileHeader {
+  position: relative;
+  text-align: center;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  margin: auto;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  transition: border 0.3s ease;
+}
+
+.cameraLabel {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--surface-alt);
+  padding: 0.25rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cameraLabel:hover {
+  background: var(--surface-hover);
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.email {
+  color: var(--text-secondary);
+}
+
+.editBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--surface-alt);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: background 0.2s ease;
+}
+
+.editBtn:hover {
+  background: var(--surface-hover);
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  background: var(--surface-alt);
+  padding: 1rem;
+  border-radius: 1rem;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statCard:hover {
+  background: var(--surface-hover);
+}
+
+.logoutBtn {
+  background: var(--error);
+  color: var(--on-error);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.logoutBtn:hover {
+  background: var(--error-hover);
+}
+
+.addressSection h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.addressList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.addressItem {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface-alt);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.addressActions button {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.addressActions button:hover {
+  opacity: 0.8;
+}
+
+.addAddress {
+  margin-top: 1rem;
+}
+
+.newAddressGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.inputWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--surface-alt);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.inputWithIcon input {
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+  padding: 0.25rem;
+  color: var(--text-primary);
+}
+
+.saveBtn {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.saveBtn:hover {
+  background: var(--primary-hover);
+}
+
+.cancelBtn {
+  background: var(--secondary);
+  color: var(--on-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background: var(--secondary-hover);
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: background 0.3s ease;
+}
+
+.modalInputs input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.reviewSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reviewList {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 2rem;
+}
+
+.reviewList::-webkit-scrollbar {
+  display: none;
+}
+
+.reviewCard {
+  flex: 0 0 auto;
+  min-width: 240px;
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 10px var(--shadow);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: var(--surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.reviewText {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.reviewAuthor {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.scrollBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface-alt);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 2px 6px var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  z-index: 5;
+}
+
+.scrollBtn:hover {
+  background: var(--surface-hover);
+}
+
+.scrollBtn.left {
+  left: 0.5rem;
+}
+
+.scrollBtn.right {
+  right: 0.5rem;
+}
+
+/* Disabled input style */
+.disabledInput {
+  background-color: var(--surface-alt);
+  cursor: not-allowed;
+  color: var(--text-secondary);
+}

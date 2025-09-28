@@ -1,0 +1,238 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff8f0; /* soft beige */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  border-radius: 16px;
+}
+
+.card:hover .image {
+  transform: scale(1.03);
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: #f5f5f5;
+}
+
+.bottom {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price {
+  font-weight: bold;
+  color: #b8860b; /* gold accent */
+  font-size: 1rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qtyInput {
+  width: 50px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #111;
+}
+
+.addBtn {
+  flex: 1;
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.addBtn:hover {
+  background: #333;
+}
+
+.removeBtn {
+  flex: 1;
+  background: #fff;
+  color: #111;
+  border: 1px solid #111;
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.removeBtn:hover {
+  background: #111;
+  color: #fff;
+}
+.cardContainer {
+  display: flex;
+  gap: 12px; /* spacing between cards */
+  overflow-x: auto; /* scrollable if too many */
+  padding: 8px 0;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+.cardContainer::-webkit-scrollbar {
+  display: none; /* hide scrollbar for clean look */
+}
+.cardContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Container for horizontal scroll */
+.cardContainer {
+  display: flex;
+  gap: 12px; /* space between cards */
+  overflow-x: auto; /* scrollable */
+  padding: 8px 0;
+  -webkit-overflow-scrolling: touch; /* smooth on iOS */
+}
+
+/* Hide scrollbar */
+.cardContainer::-webkit-scrollbar {
+  display: none;
+}
+.cardContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Make cards compact for mobile */
+@media (max-width: 768px) {
+  .card {
+    flex: 0 0 140px; /* keeps all cards in a row, width fixed */
+    min-width: 140px;
+    height: auto; /* adjust as needed */
+  }
+
+  .imageWrapper {
+    height: 100px;
+  }
+  .title {
+    font-size: 0.9rem;
+  }
+
+  .desc {
+    visibility: hidden;
+  }
+}
+/* Base overlay */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: background 0.3s ease, padding 0.3s ease;
+}
+
+/* On hover, darken for better focus */
+.card:hover .overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* Title inside overlay */
+.overlay .title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+/* Description inside overlay */
+.overlay .desc {
+  font-size: 0.85rem;
+  color: #f5f5f5;
+  line-height: 1.2;
+}
+
+/* 🔹 Tablet adjustments */
+@media (max-width: 888px) {
+  .overlay {
+    padding: 8px 10px; /* smaller padding */
+  }
+  .overlay .title {
+    font-size: 0.9rem;
+  }
+  .overlay .desc {
+    display: none; /* hide description */
+  }
+
+  .imageWrapper {
+    height: 140px; /* give image more vertical space */
+  }
+}
+
+/* 🔹 Mobile adjustments */
+@media (max-width: 480px) {
+  .overlay {
+    padding: 4px 6px;
+    background: rgba(0, 0, 0, 0.6); /* slimmer strip */
+  }
+  .overlay .title {
+    font-size: 0.8rem;
+  }
+
+  .imageWrapper {
+    height: 120px; /* shrink image wrapper */
+  }
+}

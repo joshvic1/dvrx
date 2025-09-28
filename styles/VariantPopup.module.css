@@ -1,0 +1,191 @@
+.variantPopupOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.variantPopup {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px var(--shadow);
+  width: 90%;
+  max-width: 500px; /* ✅ increase this */
+  overflow: hidden;
+  height: auto;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.variantPopupHeader {
+  position: relative;
+}
+
+.variantPopupImage {
+  display: block; /* ensure image behaves as block */
+  justify-content: center;
+
+  max-width: 90vw;
+  height: 200px; /* or auto if you want natural ratio */
+  object-fit: cover; /* crops nicely */
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 50%;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.variantPopupBody {
+  padding: 20px;
+}
+
+.variantTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.variantMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.variantPrice {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent-gold);
+}
+
+.variantRating {
+  display: flex;
+  gap: 4px;
+}
+.star {
+  color: #ccc;
+}
+.filled {
+  color: var(--accent-gold);
+}
+
+.variantGroup {
+  margin-bottom: 16px;
+}
+
+.variantLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.variantOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.variantPill {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+[data-theme="dark"] .variantPill {
+  border-color: var(--accent-gold);
+
+  color: #000;
+}
+.variantPill:hover {
+  border-color: var(--accent-gold);
+}
+.selected {
+  background: var(--accent-gold);
+  color: #fff;
+  border-color: var(--accent-gold);
+}
+[data-theme="dark"] .selected {
+  border-color: green;
+}
+
+.addToCartBtn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent-gold);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(var(--accent-gold-rgb), 0.3);
+  transition: background 0.2s;
+}
+.addToCartBtn:hover {
+  background: var(--accent-hover);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.tooltipWrapper {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-gold);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.tooltipWrapper:hover .tooltip {
+  opacity: 1;
+}
+/* Inline error under each variant */
+.error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626; /* red-600 */
+}

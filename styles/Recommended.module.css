@@ -1,0 +1,75 @@
+/* ===== Recommended Section ===== */
+.recommendedSection {
+  margin-top: 40px;
+}
+
+/* ===== Grid for Recommended Products ===== */
+.recommendedGrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ===== Product Card (reusing homepage style) ===== */
+.recommendedCard {
+  composes: productCardModern from "./Home.module.css"; /* reuse product card */
+}
+
+.recommendedImage {
+  composes: imageWrapper from "./Home.module.css";
+}
+
+.recommendedInfo {
+  composes: productInfo from "./Home.module.css";
+}
+
+.recommendedTitleText {
+  composes: productTitle from "./Home.module.css";
+}
+
+.recommendedPrice {
+  composes: price from "./Home.module.css";
+}
+
+.recommendedCartBtn {
+  composes: cartBtnModern from "./Home.module.css";
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .recommendedGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .recommendedGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .recommendedGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--accent-gold);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,190 @@
+/* Container */
+.container {
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+/* Title */
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #111827;
+}
+
+/* Form */
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  padding: 1.2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.formInput {
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.formLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.formButton {
+  grid-column: 1 / -1;
+  padding: 0.7rem 1rem;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.formButton:hover {
+  background: #1e40af;
+}
+
+/* Search */
+.search {
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.8rem;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+/* Bulk delete */
+.bulkDelete {
+  margin-bottom: 1rem;
+  background: #dc2626;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.bulkDelete:hover {
+  background: #b91c1c;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+  background: #f3f4f6;
+  font-weight: 600;
+  color: #374151;
+}
+
+.table tr:hover td {
+  background: #f9fafb;
+}
+
+.actionButton {
+  padding: 0.4rem 0.8rem;
+  margin-right: 0.4rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editButton {
+  background: #facc15;
+  color: #111827;
+}
+
+.editButton:hover {
+  background: #eab308;
+}
+
+.deleteButton {
+  background: #dc2626;
+  color: #fff;
+}
+
+.deleteButton:hover {
+  background: #b91c1c;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badgeActive {
+  background: #16a34a;
+}
+
+.badgeInactive {
+  background: #dc2626;
+}
+
+.badgeYes {
+  background: #2563eb;
+}
+
+.badgeNo {
+  background: #6b7280;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.pageButton {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageButton:hover {
+  background: #f3f4f6;
+}
+
+.activePage {
+  background: #2563eb !important;
+  color: #fff !important;
+  border-color: #2563eb !important;
+}
