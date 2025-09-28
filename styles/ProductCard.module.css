@@ -106,6 +106,10 @@
   color: var(--text-primary);
 }
 
+@media screen { 
+  
+}
+
 /* ===== Cart Button (Glassy) ===== */
 .cartBtnModern {
   background: rgba(var(--accent-gold-rgb), 0.15);

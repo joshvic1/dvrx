@@ -277,6 +277,11 @@
     height: 25px;
     font-size: 1rem;
   }
+  .tableHeader,
+  .rowHeader {
+    grid-template-columns: 40px 50px 1fr 60px 60px 50px 80px 40px;
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -312,6 +317,11 @@
   }
 
   .customerDetails {
+    font-size: 0.85rem;
+  }
+  .tableHeader,
+  .rowHeader {
+    grid-template-columns: 30px 40px 1fr 50px 50px 40px 70px 35px;
     font-size: 0.85rem;
   }
 }
@@ -357,26 +367,6 @@
   .statusSelect {
     width: 100%;
   }
-}
-
-/* Mobile & tablet adjustments */
-@media (max-width: 1024px) {
-  .tableHeader,
-  .rowHeader {
-    grid-template-columns: 40px 50px 1fr 60px 60px 50px 80px 40px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .tableHeader,
-  .rowHeader {
-    grid-template-columns: 30px 40px 1fr 50px 50px 40px 70px 35px;
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
   .tableHeader,
   .rowHeader {
     grid-template-columns: 25px 35px 1fr 40px 40px 35px 60px 30px;
