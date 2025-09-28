@@ -1,9 +1,13 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const auth = useAuth() || {};
+  const { login } = auth;
+
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) =>

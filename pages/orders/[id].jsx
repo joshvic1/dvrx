@@ -1,13 +1,17 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useAuth from "@/hooks/useAuth";
-import styles from "../../styles/OrderDetails.module.css";
+import styles from "../../styles/OrderDetail.module.css";
 
 export default function OrderDetails() {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useAuth();
+  const auth = useAuth() || {};
+  const { user } = auth;
+
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
