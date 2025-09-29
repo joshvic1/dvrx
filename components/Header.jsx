@@ -20,7 +20,7 @@ export default function Header() {
 
   // Track window width
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 800);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize(); // set initial value
 
     window.addEventListener("resize", handleResize);

@@ -95,7 +95,7 @@
   align-items: center;
   gap: 6px;
   min-height: 36px; /* 👈 keeps space reserved */
-  flex-wrap: nowrap; /* 👈 keep items in one line */
+  flex-wrap: wrap; /* 👈 keep items in one line */
   overflow: hidden;
   width: 100%;
 }
@@ -106,8 +106,7 @@
   color: var(--text-primary);
 }
 
-@media screen { 
-  
+@media screen {
 }
 
 /* ===== Cart Button (Glassy) ===== */
@@ -172,9 +171,11 @@
 
 .qtyCounterInline span {
   display: block;
-  max-width: 20px; /* 👈 prevent text from widening control */
+
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 20px;
+  text-align: center;
 }
 
 /* ===== Stock Warning ===== */
@@ -254,12 +255,28 @@
   justify-content: space-between;
   align-items: center;
   gap: 6px;
-  min-height: 36px; /* 👈 keeps space reserved */
+  min-height: 36px;
+  flex-wrap: wrap; /* 👈 keeps space reserved */
 }
 .cartBtnModern,
 .qtyCounterInline {
   flex-shrink: 1; /* 👈 allow shrinking */
   flex-grow: 0; /* 👈 prevent stretching */
-  max-width: 45%; /* 👈 each stays compact */
+
   overflow: hidden;
+  flex: 0 1 auto; /* 👈 allow shrinking but not forced to 45% */
+  max-width: 100%;
+}
+@media (max-width: 480px) {
+  .qtyCounterInline {
+    padding: 2px 6px;
+    font-size: 0.8rem;
+    gap: 3px;
+  }
+
+  .qtyCounterInline button {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
 }
