@@ -33,13 +33,14 @@ export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [subcategoryFilter, setSubcategoryFilter] = useState("all");
   const [minRating, setMinRating] = useState(0);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   // ---------- FETCH PRODUCTS ----------
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch(`${API_URL}/api/products`);
         const data = await res.json();
 
         const sortedProducts = data.sort((a, b) => b._id.localeCompare(a._id));

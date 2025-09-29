@@ -20,7 +20,7 @@ export default function OrdersPage() {
     if (!user?.email) return false;
     try {
       const res = await fetch(
-        `http://localhost:5000/api/reviews/check?productId=${productId}&customerEmail=${user.email}`
+        `${API_URL}/api/reviews/check?productId=${productId}&customerEmail=${user.email}`
       );
       const data = await res.json();
       return data.reviewed;
