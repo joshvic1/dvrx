@@ -1,7 +1,17 @@
+.authPageWrapper {
+  display: flex;
+  justify-content: center; /* horizontally center */
+  align-items: center; /* vertically center */
+  min-height: 100vh; /* full viewport height */
+  background: var(--background); /* theme background */
+  padding: 20px;
+}
+
+/* Main auth container */
 .authContainer {
-  max-width: 450px; /* was 400px */
-  width: 90%; /* allow it to grow a bit on smaller screens */
-  padding: 50px 40px; /* was 40px 30px */
+  max-width: 450px;
+  width: 90%;
+  padding: 50px 40px;
   border-radius: 12px;
   background: var(--surface);
   box-shadow: 0 6px 18px var(--shadow);
@@ -20,6 +30,7 @@
   color: var(--text-primary);
 }
 
+/* Form */
 .authForm {
   display: flex;
   flex-direction: column;
@@ -65,24 +76,12 @@
   cursor: not-allowed;
 }
 
-.authExtra {
-  margin-top: 15px;
-  font-size: 14px;
-  color: var(--text-secondary);
+.disabledBtn {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.authExtra a {
-  color: var(--accent-gold);
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.authExtra a:hover {
-  color: var(--accent-hover);
-}
-
-/* Inline green alert for already logged in */
+/* Inline green alert */
 .inlineToastSuccess {
   display: flex;
   flex-direction: column;
@@ -90,7 +89,7 @@
   gap: 10px;
   padding: 20px;
   border-radius: 8px;
-  background-color: #d4edda; /* optional: theme later */
+  background-color: #d4edda;
   color: #155724;
   font-weight: 500;
   text-align: center;
@@ -101,7 +100,7 @@
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #28a745; /* optional: theme later */
+  background-color: #28a745;
   color: #fff;
   font-weight: 500;
   cursor: pointer;
@@ -112,7 +111,13 @@
   background-color: #218838;
 }
 
-/* Smooth fade-in animation */
+.inputError {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Fade animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -124,15 +129,19 @@
   }
 }
 
-/* Responsive for small screens */
-@media (max-width: 500px) {
+/* =======================
+   RESPONSIVE BREAKPOINTS
+   ======================= */
+
+/* Tablets (≤ 768px): slightly smaller padding & fonts */
+@media (max-width: 768px) {
   .authContainer {
-    margin: 30px 20px;
-    padding: 30px 20px;
+    max-width: 400px;
+    padding: 40px 28px;
   }
 
   .authContainer h2 {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .authForm input {
@@ -146,21 +155,61 @@
   }
 }
 
-.disabledBtn {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Small Mobile (≤ 500px): tighter layout */
+@media (max-width: 500px) {
+  .authContainer {
+    margin: 20px 15px;
+    padding: 28px 20px;
+    border-radius: 10px;
+  }
+
+  .authContainer h2 {
+    font-size: 21px;
+  }
+
+  .authForm {
+    gap: 14px;
+  }
+
+  .authForm input {
+    font-size: 13.5px;
+    padding: 11px;
+  }
+
+  .authForm button {
+    font-size: 14px;
+    padding: 11px;
+  }
+
+  .authExtra {
+    font-size: 13px;
+  }
 }
 
-.inputError {
-  color: #e74c3c; /* red for errors */
-  font-size: 0.85rem;
-  margin-top: 4px;
-}
-.authPageWrapper {
-  display: flex;
-  justify-content: center; /* horizontally center */
-  align-items: center; /* vertically center */
-  min-height: 100vh; /* full viewport height */
-  background: var(--background); /* theme background */
-  padding: 20px;
+/* Very small devices (≤ 360px): stack tighter */
+@media (max-width: 360px) {
+  .authContainer {
+    width: 100%;
+    margin: 15px;
+    padding: 24px 16px;
+  }
+
+  .authContainer h2 {
+    font-size: 19px;
+    margin-bottom: 18px;
+  }
+
+  .authForm input {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .authForm button {
+    font-size: 13.5px;
+    padding: 10px;
+  }
+
+  .authExtra {
+    font-size: 12px;
+  }
 }
