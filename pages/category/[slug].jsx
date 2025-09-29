@@ -29,6 +29,7 @@ export default function CategoryPage() {
 
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const PRODUCTS_PER_LOAD = 12;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   // Initialize displayed products when filteredProducts change
   useEffect(() => {
@@ -79,9 +80,7 @@ export default function CategoryPage() {
   const fetchProductsWithRatings = async (products) => {
     const productsWithRatings = await Promise.all(
       products.map(async (p) => {
-        const res = await fetch(
-          `http://localhost:5000/api/reviews?productId=${p._id}`
-        );
+        const res = await fetch(`${API_URL}/api/reviews?productId=${p._id}`);
         const reviews = await res.json();
         const avgRating =
           reviews.reduce((acc, r) => acc + r.rating, 0) / (reviews.length || 1);
@@ -94,7 +93,7 @@ export default function CategoryPage() {
   useEffect(() => {
     if (!slug) return;
 
-    fetch(`http://localhost:5000/api/products?category=${slug}`)
+    fetch(`${API_URL}/api/products?category=${slug}`)
       .then((res) => res.json())
       .then(async (data) => {
         const updated = data.map((p) => ({
