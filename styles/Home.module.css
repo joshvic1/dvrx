@@ -518,3 +518,15 @@
     background-position: 300% 50%;
   }
 }
+@media (max-width: 480px) {
+  .sectionHeader,
+  .sectionHeader2 {
+    flex-direction: row; /* keep them side by side */
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--accent-gold);
+  }
+}

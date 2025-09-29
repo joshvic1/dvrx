@@ -562,9 +562,12 @@ export default function ProductPage() {
               ))}
             </div>
 
-            {/* Main image with arrows */}
+            {/* Main image with arrows + wishlist */}
             <div className={styles.mainImage}>
-              <button onClick={handlePrevImage} className={styles.arrowBtn}>
+              <button
+                onClick={handlePrevImage}
+                className={`${styles.arrowBtn} ${styles.leftArrow}`}
+              >
                 <FaChevronLeft />
               </button>
 
@@ -573,23 +576,27 @@ export default function ProductPage() {
                 alt={product.name}
               />
 
-              <button onClick={handleNextImage} className={styles.arrowBtn}>
+              <button
+                onClick={handleNextImage}
+                className={`${styles.arrowBtn} ${styles.rightArrow}`}
+              >
                 <FaChevronRight />
+              </button>
+
+              {/* ✅ Now inside .mainImage */}
+              <button
+                className={`${styles.wishlistBtn} ${
+                  isInWishlist ? styles.active : ""
+                }`}
+                onClick={handleWishlistClick}
+              >
+                <FaHeart /> {isInWishlist ? "Saved" : "Save"}
               </button>
             </div>
           </div>
-
-          {/* Wishlist button as before */}
-          <button
-            className={`${styles.wishlistBtn} ${
-              isInWishlist ? styles.active : ""
-            }`}
-            onClick={handleWishlistClick}
-          >
-            <FaHeart /> {isInWishlist ? "Saved" : "Save"}
-          </button>
         </div>
 
+        {/* Product Details */}
         <div className={styles.details}>
           <div className={styles.reviewSection}>
             {canReview && (
@@ -602,11 +609,14 @@ export default function ProductPage() {
               <StarRating value={Math.round(avgRating)} />
             </div>
           </div>
+
           <h1 className={styles.title}>{product.name}</h1>
           <p className={styles.price}>
             ₦{Number(product.price).toLocaleString()}
           </p>
-          {product.variants && product.variants.length > 0 && (
+
+          {/* Variants */}
+          {product.variants?.length > 0 && (
             <div className={styles.variantWrapper}>
               {product.variants.map((variant) => (
                 <div key={variant.name} className={styles.variantGroup}>
@@ -629,7 +639,7 @@ export default function ProductPage() {
                             setVariantError("");
                           }}
                         >
-                          {v.value} {/* <-- Use the value property */}
+                          {v.value}
                         </button>
                       );
                     })}
@@ -642,26 +652,24 @@ export default function ProductPage() {
             </div>
           )}
 
+          {/* Add to Cart */}
           <div className={styles.addToCartWrapper}>
-            <div className={styles.addToCartWrapper}>
-              <button className={styles.addBtn} onClick={handleAddToCartClick}>
-                Add to Cart
-                {cart.filter((item) => item.productId === product._id).length >
-                  0 && (
-                  <span className={styles.cartCounter}>
-                    {cart
-                      .filter((item) => item.productId === product._id)
-                      .reduce((sum, item) => sum + (item.qty || 0), 0)}
-                  </span>
-                )}
-              </button>
-
-              {stockError && (
-                <p className={styles.stockWarning}>{stockError}</p>
+            <button className={styles.addBtn} onClick={handleAddToCartClick}>
+              Add to Cart
+              {cart.filter((item) => item.productId === product._id).length >
+                0 && (
+                <span className={styles.cartCounter}>
+                  {cart
+                    .filter((item) => item.productId === product._id)
+                    .reduce((sum, item) => sum + (item.qty || 0), 0)}
+                </span>
               )}
-            </div>
+            </button>
+
+            {stockError && <p className={styles.stockWarning}>{stockError}</p>}
           </div>
 
+          {/* Description */}
           <div className={styles.description}>
             {renderDescription(product.description)}
           </div>
@@ -702,14 +710,14 @@ export default function ProductPage() {
         </div>
       )}
 
-      {/* IMPORTANT: pass the `show` prop so LoginModal doesn't early-return */}
+      {/* Login Modal */}
       <LoginModal
         show={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         prefillEmail={user?.email || ""}
       />
 
-      {/* Reviews section */}
+      {/* Reviews Section */}
       <div className={styles.reviewsWrapper}>
         <div className={styles.reviewHeader}>
           <div className={styles.reviewHeaderLeft}>
@@ -719,9 +727,8 @@ export default function ProductPage() {
             </h2>
           </div>
 
-          {/* Filter + Scroll buttons container */}
           <div className={styles.reviewHeaderRight}>
-            {/* Filter button */}
+            {/* Filter Button */}
             <div className={styles.reviewFilterWrapper}>
               <button
                 className={styles.filterIconBtn}
@@ -763,7 +770,7 @@ export default function ProductPage() {
               )}
             </div>
 
-            {/* Scroll buttons */}
+            {/* Scroll Buttons */}
             <div className={styles.headerScrollBtns}>
               <button
                 onClick={() => scrollReviews("left")}
@@ -781,7 +788,7 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Review list */}
+        {/* Review List */}
         <div className={`${styles.reviewList} no-scrollbar`} ref={scrollRef}>
           {reviews.length === 0 ? (
             <p className={styles.noReviews}>No reviews yet.</p>
