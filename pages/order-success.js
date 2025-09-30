@@ -161,21 +161,17 @@ export default function OrderSuccess() {
         </div>
 
         {/* Summary */}
+        {/* Summary */}
         <div className={styles.orderSummary}>
           <div>
             <span>Subtotal</span>
-            <span>
-              ₦
-              {order.items
-                .reduce((sum, i) => sum + i.price * i.qty, 0)
-                .toLocaleString()}
-            </span>
+            <span>₦{order.subtotal.toLocaleString()}</span>
           </div>
 
           {order.promoCode && (
             <div>
               <span>Discount</span>
-              <span>-₦{(order.promoDiscount || 0).toLocaleString()}</span>
+              <span>-₦{order.discount.toLocaleString()}</span>
             </div>
           )}
 

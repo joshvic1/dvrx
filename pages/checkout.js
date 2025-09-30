@@ -23,6 +23,8 @@ export default function Checkout() {
   const { addToast } = useToast();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const total = Math.max(subtotal - discount, 0);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -555,12 +557,7 @@ export default function Checkout() {
           <div className={styles.totalWrapper}>
             <div className={styles.totalLine}>
               <span>Subtotal:</span>
-              <span>
-                ₦
-                {cart
-                  .reduce((sum, item) => sum + item.price * item.qty, 0)
-                  .toLocaleString("en-NG")}
-              </span>
+              <span>₦{subtotal.toLocaleString("en-NG")}</span>
             </div>
             {discount > 0 && (
               <div className={styles.totalLineDiscount}>
@@ -570,14 +567,7 @@ export default function Checkout() {
             )}
             <div className={styles.totalLineBold}>
               <span>Total:</span>
-              <span>
-                ₦
-                {Math.max(
-                  cart.reduce((sum, item) => sum + item.price * item.qty, 0) -
-                    discount,
-                  0
-                ).toLocaleString("en-NG")}
-              </span>
+              <span>₦{total.toLocaleString("en-NG")}</span>
             </div>
           </div>
 
@@ -599,10 +589,7 @@ export default function Checkout() {
         onClose={() => setShowLastMinute(false)}
         onConfirm={handleCheckout} // runs original checkout when confirmed
         products={allProducts}
-        total={Math.max(
-          cart.reduce((sum, item) => sum + item.price * item.qty, 0) - discount,
-          0
-        )}
+        total={total}
       />
 
       {/* Login Popup */}
