@@ -8,7 +8,8 @@ import MobileCartBar from "./MobileCartBar";
 
 export default function CartSidebar() {
   const [isDesktop, setIsDesktop] = useState(false);
-  const { cart, updateQty, removeFromCart } = useCart();
+  const { cart, updateQty, removeFromCart, hydrated } = useCart();
+
   const [isOpen, setIsOpen] = useState(false);
   const [prevCartLength, setPrevCartLength] = useState(0);
   const excludedPaths = ["/cart", "/checkout", "/profile"];
@@ -69,12 +70,16 @@ export default function CartSidebar() {
       .filter((i) => i.productId === productId)
       .reduce((sum, i) => sum + i.qty, 0);
   };
-  // ✅ return
-  // if (!isDesktop) {
-  //   return <MobileCartBar />; // only render mobile
-  // }
 
-  // if (!isOpen) return null; // desktop hidden
+  if (!hydrated) {
+    return <aside className={styles.sidebarPlaceholder}></aside>;
+  }
+  // ✅ return
+  if (!isDesktop) {
+    return <MobileCartBar />; // only render mobile
+  }
+
+  if (!isOpen) return null; // desktop hidden
   return (
     <>
       {isDesktop ? (

@@ -8,10 +8,15 @@ import { motion } from "framer-motion";
 import { FiShoppingBag } from "react-icons/fi";
 
 export default function MobileCartBar() {
-  const { cart, updateQty, removeFromCart } = useCart();
+  const { cart, updateQty, removeFromCart, hydrated } = useCart();
+
   const [isOpen, setIsOpen] = useState(false);
   const [animateDrop, setAnimateDrop] = useState(false);
   const router = useRouter();
+
+  if (!hydrated) {
+    return <aside className={styles.sidebarPlaceholder}></aside>;
+  }
 
   const excludedPaths = ["/cart", "/checkout", "/profile"];
   const isExcluded = excludedPaths.includes(router.pathname);

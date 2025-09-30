@@ -229,7 +229,7 @@
 
 @media (max-width: 768px) {
   .wishlistHeader {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 6px;
   }
@@ -253,7 +253,7 @@
 
 @media (max-width: 480px) {
   .wishlistHeader {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-align: center;
   }

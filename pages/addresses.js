@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Home, Map } from "lucide-react";
+import { Home, icons, Map, Plus, Pencil, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import styles from "@/styles/ProfileSidebar.module.css"; // reuse or create a separate CSS file if needed
@@ -146,79 +146,43 @@ export default function Addresses() {
   return (
     <div className={styles.addressSection}>
       <div className={styles.headerRow}>
-        <h2>📍 Saved Addresses</h2>
-        <button
-          className={styles.addBtn}
-          onClick={() =>
-            document
-              .getElementById("addAddressForm")
-              .scrollIntoView({ behavior: "smooth" })
-          }
-        >
-          + Add New
+        <h2>Saved Addresses</h2>
+        <button className={styles.addBtn}>
+          <Plus size={16} /> Add Address
         </button>
       </div>
 
       {addresses.length === 0 ? (
-        <p className={styles.empty}>No addresses saved yet.</p>
+        <p className={styles.empty}>You haven’t saved any addresses yet.</p>
       ) : (
-        <ul className={styles.addressList}>
+        <div className={styles.addressGrid}>
           {addresses.map((addr) => (
-            <li key={addr._id} className={styles.addressCard}>
-              {editingId === addr._id ? (
-                <div className={styles.editForm}>
-                  <input
-                    value={editAddress.houseNumber}
-                    onChange={(e) =>
-                      setEditAddress({
-                        ...editAddress,
-                        houseNumber: e.target.value,
-                      })
-                    }
-                    placeholder="House #"
-                  />
-                  <input
-                    value={editAddress.street}
-                    onChange={(e) =>
-                      setEditAddress({ ...editAddress, street: e.target.value })
-                    }
-                    placeholder="Street"
-                  />
-                  <div className={styles.actions}>
-                    <button onClick={updateAddress} disabled={loading}>
-                      💾 Save
-                    </button>
-                    <button onClick={cancelEditing}>✖ Cancel</button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className={styles.addressInfo}>
-                    <Home size={18} className={styles.icon} />
-                    <span>
-                      {addr.houseNumber}, {addr.street}, {addr.localGovt},{" "}
-                      {addr.state}, {addr.country}
-                    </span>
-                  </div>
-                  <div className={styles.actions}>
-                    <button onClick={() => startEditing(addr)}>✏ Edit</button>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => deleteAddress(addr._id)}
-                    >
-                      🗑 Delete
-                    </button>
-                  </div>
-                </>
-              )}
-            </li>
+            <div key={addr._id} className={styles.addressCard}>
+              <div className={styles.addressInfo}>
+                <Home size={18} className={styles.icon} />
+                <span>
+                  {addr.houseNumber}, {addr.street}, {addr.localGovt},{" "}
+                  {addr.state}, {addr.country}
+                </span>
+              </div>
+              <div className={styles.actions}>
+                <button onClick={() => startEditing(addr)}>
+                  <Pencil size={16} />
+                </button>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => deleteAddress(addr._id)}
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
-      {/* Add new address */}
-      <div id="addAddressForm" className={styles.addAddress}>
-        <h3>Add New Address</h3>
+      <div className={styles.formSection}>
+        <h3>{editingId ? "Edit Address" : "Add New Address"}</h3>
         <div className={styles.formGrid}>
           {["houseNumber", "street", "localGovt", "state", "country"].map(
             (field) => (
@@ -226,21 +190,37 @@ export default function Addresses() {
                 key={field}
                 name={field}
                 placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                value={newAddress[field]}
+                value={editingId ? editAddress[field] : newAddress[field]}
                 onChange={(e) =>
-                  setNewAddress({ ...newAddress, [field]: e.target.value })
+                  editingId
+                    ? setEditAddress({
+                        ...editAddress,
+                        [field]: e.target.value,
+                      })
+                    : setNewAddress({ ...newAddress, [field]: e.target.value })
                 }
               />
             )
           )}
         </div>
-        <button
-          className={styles.saveBtn}
-          onClick={addAddress}
-          disabled={loading}
-        >
-          {loading ? "Saving..." : "Save Address"}
-        </button>
+        <div className={styles.formActions}>
+          <button
+            className={styles.saveBtn}
+            onClick={editingId ? updateAddress : addAddress}
+            disabled={loading}
+          >
+            {loading
+              ? "Saving..."
+              : editingId
+              ? "Update Address"
+              : "Save Address"}
+          </button>
+          {editingId && (
+            <button className={styles.cancelBtn} onClick={cancelEditing}>
+              <X size={16} /> Cancel
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

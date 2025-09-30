@@ -154,7 +154,7 @@ export default function ProfilePage() {
           }`}
         >
           <MapPin size={18} />
-          <span>Addresses</span>
+          <span>Address</span>
         </button>
 
         <button

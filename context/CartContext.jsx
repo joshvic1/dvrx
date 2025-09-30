@@ -8,6 +8,8 @@ export function CartProvider({ children }) {
   const auth = useAuth();
   const user = auth?.user || null;
   const [cart, setCart] = useState([]);
+  const [hydrated, setHydrated] = useState(false);
+
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
   function getTotalQtyForProduct(productId) {
@@ -21,62 +23,83 @@ export function CartProvider({ children }) {
     setPromoCode("");
     setDiscount(0);
   }
+  // Load cart on mount
+
+  // Save cart when it changes
+  useEffect(() => {
+    if (hydrated) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart, hydrated]);
 
   // Load cart on app start
   useEffect(() => {
+    let mounted = true;
+
     const loadCart = async () => {
-      if (user) {
-        try {
+      try {
+        if (user) {
+          // try to load from server for logged-in users
           const res = await fetch(`/api/cart/${user._id}`);
           if (res.ok) {
             const data = await res.json();
-            setCart(data.cart || []);
+            if (mounted && data && Array.isArray(data.cart)) {
+              setCart(data.cart);
+            }
+          } else {
+            // fallback to localStorage if server returns non-ok
+            if (typeof window !== "undefined") {
+              const saved = localStorage.getItem("cart");
+              if (saved) setCart(JSON.parse(saved));
+            }
           }
-        } catch (err) {
-          console.error("Error fetching user cart:", err);
+        } else {
+          // guest: load from localStorage (client-only)
+          if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("cart");
+            if (saved) setCart(JSON.parse(saved));
+          }
         }
-      } else {
-        const savedCart = localStorage.getItem("cart");
-        if (savedCart) setCart(JSON.parse(savedCart));
+      } catch (err) {
+        console.error("Error loading cart:", err);
+      } finally {
+        // mark hydration complete even if load failed to avoid blocking saves forever
+        if (mounted) setHydrated(true);
       }
     };
+
     loadCart();
+    return () => {
+      mounted = false;
+    };
   }, [user]);
 
   // Save cart whenever it changes
   useEffect(() => {
+    if (!hydrated) return; // IMPORTANT: do not save until we've loaded initial cart
+
     const saveCart = async () => {
-      if (user) {
-        try {
+      try {
+        if (user) {
           await fetch(`/api/cart/${user._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cart }),
           });
-        } catch (err) {
-          console.error("Error saving cart:", err);
+        } else {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            // notify other tabs
+            window.dispatchEvent(new Event("cartUpdated"));
+          }
         }
-      } else {
-        localStorage.setItem("cart", JSON.stringify(cart));
+      } catch (err) {
+        console.error("Error saving cart:", err);
       }
     };
+
     saveCart();
-  }, [cart, user]);
-
-  // Listen for localStorage updates from other tabs
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === "cart" && e.newValue) {
-        setCart(JSON.parse(e.newValue));
-      }
-    };
-
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, []);
+  }, [cart, user, hydrated]);
 
   // Listen for localStorage updates from other tabs
   useEffect(() => {
@@ -105,7 +128,7 @@ export function CartProvider({ children }) {
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("cartUpdated", handleManualEvent);
     };
-  }, [user]);
+  }, [user, cart]);
 
   // Generate a unique key for product+variant combo
   function getKey(productId, variant = {}) {
@@ -230,6 +253,7 @@ export function CartProvider({ children }) {
     <CartContext.Provider
       value={{
         cart,
+        hydrated,
         addToCart,
         removeFromCart,
         updateQty,
