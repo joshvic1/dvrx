@@ -22,6 +22,10 @@
   --shadow: rgba(0, 0, 0, 0.08);
   --accent-gold: #c5a572;
   --accent-gold-rgb: 197, 165, 114;
+  --hover: #f5f2ec;
+  --muted: #777777; /* matches your --text-muted */
+  --primary: var(--accent-gold); /* reuse gold accent */
+  --text: var(--text-primary);
 }
 
 [data-theme="dark"] {
@@ -46,6 +50,10 @@
   --shadow: rgba(0, 0, 0, 0.5);
   --accent-gold: #c5a572;
   --accent-gold-rgb: 197, 165, 114;
+  --hover: #2a2a2a; /* dark hover background */
+  --muted: #aaaaaa; /* matches your --text-muted */
+  --primary: var(--accent-gold); /* gold accent */
+  --text: var(--text-primary);
 }
 
 @theme inline {

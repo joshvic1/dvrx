@@ -7,6 +7,7 @@ import styles from "../styles/CartSidebar.module.css";
 import MobileCartBar from "./MobileCartBar";
 
 export default function CartSidebar() {
+  const [isDesktop, setIsDesktop] = useState(false);
   const { cart, updateQty, removeFromCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [prevCartLength, setPrevCartLength] = useState(0);
@@ -16,26 +17,27 @@ export default function CartSidebar() {
 
   // Open sidebar only if cart has items & not on /cart or /checkout
 
+  // ✅ track screen size
+  useEffect(() => {
+    const checkScreen = () => setIsDesktop(window.innerWidth >= 1020);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   const [manualClose, setManualClose] = useState(false);
 
+  // ✅ sidebar open state (desktop only)
   useEffect(() => {
+    if (!isDesktop) return; // skip mobile
+
     const excludedPaths = ["/cart", "/checkout", "/profile"];
-
-    if (excludedPaths.includes(router.pathname)) {
+    if (excludedPaths.includes(router.pathname) || cart.length === 0) {
       setIsOpen(false);
       return;
     }
-
-    if (cart.length === 0) {
-      setIsOpen(false);
-      return;
-    }
-
-    // ✅ Always open when there's at least 1 item
     setIsOpen(true);
-
-    setPrevCartLength(cart.length);
-  }, [cart, router.pathname]);
+  }, [cart, router.pathname, isDesktop]);
 
   // Reset manualClose on route change
   useEffect(() => {
@@ -43,14 +45,15 @@ export default function CartSidebar() {
   }, [router.pathname]);
 
   // Add body margin when sidebar is open
+  // ✅ avoid body margin shift on mobile
   useEffect(() => {
-    document.body.style.marginRight = isOpen ? "16rem" : "0";
-    return () => {
-      document.body.style.marginRight = "0";
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+    if (isDesktop) {
+      document.body.style.marginRight = isOpen ? "16rem" : "0";
+      return () => {
+        document.body.style.marginRight = "0";
+      };
+    }
+  }, [isOpen, isDesktop]);
 
   const getImageUrl = (image) => {
     if (!image) return "/placeholder.png";
@@ -66,11 +69,16 @@ export default function CartSidebar() {
       .filter((i) => i.productId === productId)
       .reduce((sum, i) => sum + i.qty, 0);
   };
+  // ✅ return
+  // if (!isDesktop) {
+  //   return <MobileCartBar />; // only render mobile
+  // }
 
+  // if (!isOpen) return null; // desktop hidden
   return (
     <>
-      <div className={styles.desktop}>
-        <aside className={`hidden md:flex ${styles.sidebar}`}>
+      {isDesktop ? (
+        <aside className={styles.sidebar}>
           {/* Sidebar Header */}
           <div className={styles.sidebarHeader}>
             <h2>Your Cart</h2>
@@ -199,11 +207,9 @@ export default function CartSidebar() {
             </button>
           </div>
         </aside>
-      </div>
-      {/* Mobile floating cart */}{" "}
-      <div className={styles.mobile}>
+      ) : (
         <MobileCartBar />
-      </div>
+      )}
     </>
   );
 }

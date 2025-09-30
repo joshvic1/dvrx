@@ -1,87 +1,46 @@
-/* Floating bar */
-.floatingBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--surface);
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  z-index: 1000;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.cartCount {
-  font-weight: 600;
-}
-
-.cartTotal {
-  font-weight: 500;
+.total {
+  font-size: 1.1rem;
+  font-weight: bold;
   color: var(--accent-gold);
 }
 
-.checkoutBtn {
-  background: var(--accent-gold);
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* Drop animation */
-@keyframes drop {
-  0% {
-    transform: translateY(-20px) scale(0.9);
-    opacity: 0;
-  }
-  50% {
-    transform: translateY(5px) scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
-}
-.dropAnimation {
-  animation: drop 0.6s ease;
-}
-
-/* Fullscreen cart */
-.fullscreenCart {
+/* Overlay background */
+.overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--background);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
   display: flex;
-  flex-direction: column;
-  z-index: 1100;
+  justify-content: center;
+  align-items: flex-end;
   animation: fadeIn 0.3s ease;
 }
 
-.cartHeader {
+/* Bottom sheet (popup) */
+.sheet {
+  background: var(--surface);
+  width: 100%;
+  max-height: 85%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -6px 22px rgba(0, 0, 0, 0.25);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  font-weight: 600;
-  border-bottom: 1px solid var(--border);
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
 }
 
-.closeBtn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+/* Drag handle */
+.dragHandle {
+  width: 45px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--border);
+  margin: 10px auto;
 }
 
-.cartItems {
+/* Cart items */
+.items {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
@@ -89,32 +48,529 @@
 
 .item {
   display: flex;
-  gap: 12px;
+  align-items: flex-start;
   margin-bottom: 16px;
-}
-
-.itemImage {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .itemDetails {
   flex: 1;
 }
 
-.qtyControls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+.itemVariant {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 6px;
 }
 
-.fullscreenFooter {
+.qtyControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+
+.qtyControls button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  background: var(--accent-gold);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+[data-theme="dark"] .qtyControls button {
+  border: 1px solid #fff;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #e74c3c;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.stockWarning {
+  font-size: 0.75rem;
+  color: #e62222;
+  margin-top: 4px;
+}
+
+/* Footer */
+.footer {
   border-top: 1px solid var(--border);
   padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--surface);
+}
+
+.footer .total {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.checkoutBtn {
+  background: var(--accent-gold);
+  color: var(--on-accent, #fff);
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.checkoutBtn:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Cart item row */
+.cartItem {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.itemInfo {
+  flex: 1;
+}
+
+.qtyControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+.qtyControls button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--danger, #e74c3c);
+  cursor: pointer;
+}
+
+.floatingCheckout {
+  width: 100%;
+  background: var(--accent-gold);
+  color: #fff;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.total {
+  font-weight: 700;
+  color: var(--accent-gold);
+  font-size: 1rem;
+}
+
+/* ===============================
+   Overlay & Popup
+   =============================== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.popup {
+  background: var(--background);
+  width: 100%;
+  max-height: 85%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ===============================
+   Header
+   =============================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+.header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* ===============================
+   Cart Items
+   =============================== */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.8rem 1.2rem;
+}
+
+.cartItem {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.itemImage {
+  width: 55px;
+  height: 55px;
+  border-radius: 0.6rem;
+  object-fit: cover;
+  margin-right: 0.8rem;
+}
+
+.itemInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.01rem;
+}
+
+.itemName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.itemPrice {
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.qtyControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qtyControls button {
+  width: 20px;
+  height: 20px;
+  border-radius: 30%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--danger, #e74c3c);
+  cursor: pointer;
+  margin-left: 0.6rem;
+}
+
+/* ===============================
+   Footer
+   =============================== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+}
+
+.confirmBtn {
+  width: 100%;
+  background: var(--accent-gold);
+  color: #fff;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.confirmBtn:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+}
+/* ===== Floating bar (base) ===== */
+.floatingBar {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* space between content and checkout btn */
+  gap: 12px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  width: 90%;
+  max-width: 420px;
+  z-index: 1000;
+  cursor: pointer;
+  overflow: visible; /* allow drop visuals to show outside */
+}
+.barInfo {
+  display: flex;
+  align-items: center;
+}
+/* ensure barContent is a positioning anchor */
+.barContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 0 0 1rem;
+  position: relative; /* anchor for cartCount pseudo-element fallback */
+}
+
+/* cart count (anchor for the drop animation) */
+.cartCount {
+  font-weight: 700;
+  font-size: 0.85rem;
+  opacity: 0.95;
+  position: relative; /* anchor for pseudo element drop */
+  z-index: 2;
+}
+
+/* the little dropped item is rendered as a pseudo-element on .cartCount */
+.cartCount::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -28px; /* starting above the bar */
+  transform: translateX(-50%) scale(0.9);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  opacity: 0; /* hidden by default */
+  pointer-events: none;
+}
+
+/* Checkout button inside the floating bar */
+.floatingCheckout {
+  background: var(--accent-gold);
+  color: var(--on-accent, #fff);
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+/* Slight hover on the checkout button */
+.floatingCheckout:hover {
+  transform: translateY(-2px);
+}
+
+/* ========== DROP ANIMATION TRIGGERS ========== */
+/* Add the 'dropAnimation' class on the parent .floatingBar (you already toggle this) */
+.floatingBar.dropAnimation .barContent {
+  animation: _mc_barBounce 650ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.floatingBar.dropAnimation .cartCount {
+  animation: _mc_pop 650ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+/* animate the pseudo-element drop itself */
+.floatingBar.dropAnimation .cartCount::after {
+  opacity: 1;
+  animation: _mc_dropIn 650ms cubic-bezier(0.09, 0.8, 0.25, 1) forwards;
+}
+
+/* small sparkle that fades after drop (optional visual, uses ::before) */
+.floatingBar.dropAnimation .cartCount::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -42px;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  box-shadow: 0 0 10px rgba(255, 220, 120, 0.9);
+  animation: _mc_spark 650ms ease forwards;
+}
+
+/* ========== KEYFRAMES ========== */
+@keyframes _mc_dropIn {
+  0% {
+    transform: translateX(-50%) translateY(-18px) scale(0.8);
+    opacity: 1;
+  }
+  55% {
+    transform: translateX(-50%) translateY(6px) scale(1.06);
+  }
+  75% {
+    transform: translateX(-50%) translateY(0px) scale(0.92);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes _mc_barBounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-6px);
+  }
+  55% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes _mc_pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.18);
+  }
+  70% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes _mc_spark {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.6);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(2px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.7);
+  }
+}
+
+/* ==== small extra polish: disabled pointer events during animation ==== */
+.floatingBar.dropAnimation {
+  pointer-events: auto;
+}
+
+/* ===== responsive tweaks to keep visuals aligned ===== */
+@media (max-width: 420px) {
+  .floatingBar {
+    padding: 0.6rem 0.85rem;
+    gap: 8px;
+  }
+  .cartCount::after {
+    top: -24px;
+    width: 12px;
+    height: 12px;
+  }
+  .cartCount::before {
+    top: -36px;
+  }
+  .floatingCheckout {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* ===== Respect reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .floatingBar.dropAnimation .barContent,
+  .floatingBar.dropAnimation .cartCount,
+  .floatingBar.dropAnimation .cartCount::after,
+  .floatingBar.dropAnimation .cartCount::before {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1;
+    transform: none;
+  }
 }

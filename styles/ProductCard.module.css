@@ -9,7 +9,7 @@
 /* Force 2 per row on tablets & mobile */
 @media (max-width: 768px) {
   .productGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin: 0 auto; /* center content */
     padding: 0 6px;

@@ -17,7 +17,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -149,7 +149,7 @@
   top: 50%;
   transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.4);
-  color: #fff;
+  color: var(--text-primary);
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -161,7 +161,9 @@
   transition: background 0.2s ease;
   z-index: 2;
 }
-
+[data-theme="light"] .arrowBtn {
+  background-color: rgb(255, 255, 255, 0.4);
+}
 .arrowBtn:hover {
   background: rgba(0, 0, 0, 0.6);
 }
@@ -179,7 +181,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 6px 12px;
@@ -188,18 +190,21 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  color: var(--text);
   transition: all 0.2s ease;
   z-index: 3;
 }
 
 .wishlistBtn:hover {
   background: var(--accent-gold);
-  color: #fff;
+  color: var(--on-accent, #fff); /* fallback to white */
+  border-color: var(--accent-gold);
 }
 
 .wishlistBtn.active {
   background: var(--accent-gold);
-  color: #fff;
+  color: var(--on-accent, #fff);
+  border-color: var(--accent-gold);
 }
 
 /* ===============================
@@ -335,8 +340,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
-.variantOption:hover {
+.avatar .variantOption:hover {
   background: var(--background-alt);
 }
 
@@ -447,7 +451,48 @@
   border-top: 1px solid var(--border);
   padding-top: 1.2rem;
 }
-
+/* ===== View More Description ===== */
+.truncatedDesc {
+  padding-top: 20px;
+  max-height: 120px;
+  overflow: hidden;
+  position: relative;
+  color: #333;
+}
+[data-theme="dark"] .truncatedDesc {
+  color: #ddd;
+}
+.truncatedDesc::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  padding-top: 20px;
+  background: linear-gradient(transparent, white);
+}
+[data-theme="dark"] .truncatedDesc::after {
+  background: linear-gradient(transparent, #121212);
+}
+.fullDesc {
+  max-height: none;
+  padding-top: 20px;
+}
+.viewMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: #8e845f;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 5px;
+}
+[data-theme="dark"] .viewMoreBtn {
+  color: #ecdfb2;
+}
 /* ===============================
    REVIEWS SECTION
    =============================== */
@@ -588,11 +633,11 @@
   width: 40px;
   height: 40px;
   background: var(--background-alt);
-  border-radius: 50%;
+  border-radius: 30%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 0.5rem;
 }
 
 .reviewText {
@@ -920,6 +965,11 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  padding: 0.8rem;
+  border-radius: 10px;
+  background: var(--background-alt);
+  box-shadow: 0 3px 10px var(--shadow);
 }
 
 /* Header */
@@ -1048,7 +1098,7 @@
   min-width: 250px;
   max-width: 280px;
   flex: 0 0 auto;
-  background: #fff;
+  background: var(--background);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1rem;
@@ -1335,4 +1385,7 @@
 
 .description {
   margin: 0; /* remove extra margins */
+}
+.avgRating {
+  font-size: 30px;
 }

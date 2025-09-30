@@ -39,14 +39,14 @@ export default function Header() {
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
     setTheme(storedTheme);
-    document.documentElement.classList.toggle("dark", storedTheme === "dark");
+    document.documentElement.setAttribute("data-theme", storedTheme); // ✅
   }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    document.documentElement.setAttribute("data-theme", newTheme); // ✅ match CSS
   };
 
   // Socket notifications
