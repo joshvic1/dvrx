@@ -283,7 +283,7 @@ export default function OrdersPage() {
                         <tfoot>
                           <tr>
                             <td colSpan="3" className={styles.totalLabel}>
-                              Total
+                              Total paid:
                             </td>
                             <td className={styles.totalValue}>
                               ₦{order.total.toLocaleString("en-NG")}
