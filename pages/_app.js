@@ -19,6 +19,7 @@ function AppContent({ Component, pageProps }) {
   const categories = ["Electronics", "Fashion", "Food", "Books"];
 
   const isAdminRoute = router.pathname.startsWith("/admin"); // ✅ check if admin
+  const hideLayout = Component.hideLayout || false;
 
   // Router events for page transitions
   useEffect(() => {
@@ -39,12 +40,14 @@ function AppContent({ Component, pageProps }) {
   return (
     <>
       <TopLoader isLoading={loading} />
-      {!isAdminRoute && ( // ❌ Hide header for admin routes
+      {!isAdminRoute && !hideLayout && (
+        // ❌ Hide header for admin routes
         <Header categories={categories} onFilter={(data) => setFilters(data)} />
       )}
       <Component {...pageProps} filters={filters} />
       <CartSidebar />
-      {!isAdminRoute && <Footer />} {/* Optional: hide footer for admin */}
+      {!isAdminRoute && !hideLayout && <Footer />}{" "}
+      {/* Optional: hide footer for admin */}
     </>
   );
 }
