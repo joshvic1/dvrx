@@ -3,7 +3,7 @@ import { FaWhatsapp } from "react-icons/fa";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-500 via-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
+    <div className="min-h-screen bg-gradient-to-b from-black-500 via-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
       {/* Floating animated shapes */}
       <motion.div
         className="absolute top-10 left-10 w-16 h-16 bg-yellow-400 rounded-full blur-xl opacity-60"
