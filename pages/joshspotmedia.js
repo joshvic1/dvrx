@@ -13,23 +13,38 @@ export default function LandingPage() {
     setIsTikTokBrowser(/tiktok/i.test(ua));
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.ttq) {
+      window.ttq.track("PageView");
+      console.log("✅ TikTok PageView event fired");
+    }
+  }, []);
+
   // ✅ Add TikTok Pixel tracking here
   const handleClick = () => {
-    // 🔹 TikTok tracking event
+    // ✅ Ensure TikTok Pixel is available
     if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.track("ClickButton", {
-        content_name: "Join WhatsApp Group",
-        url: window.location.href,
-      });
-      console.log("✅ TikTok event tracked: Join WhatsApp Group");
+      try {
+        window.ttq.track("ClickButton", {
+          content_name: "Join WhatsApp Group",
+          page: window.location.pathname,
+        });
+        console.log("✅ TikTok ClickButton event fired!");
+      } catch (err) {
+        console.error("❌ TikTok event error:", err);
+      }
+    } else {
+      console.warn("⚠️ TikTok Pixel not ready yet.");
     }
 
-    // 🔹 WhatsApp redirect logic
+    // ✅ WhatsApp redirect logic
     if (!isTikTokBrowser) {
-      window.location.href = whatsappDeepLink;
       setTimeout(() => {
-        window.location.href = whatsappFallback;
-      }, 1000);
+        window.location.href = whatsappDeepLink;
+        setTimeout(() => {
+          window.location.href = whatsappFallback;
+        }, 1000);
+      }, 300); // small delay to ensure TikTok tracks the click
     } else {
       window.location.href = whatsappFallback;
     }
