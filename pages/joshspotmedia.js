@@ -19,8 +19,6 @@ export default function LandingPage() {
     if (typeof window !== "undefined" && window.ttq) {
       window.ttq.track("ClickButton", {
         content_name: "Join WhatsApp Group",
-        value: 0,
-        currency: "NGN",
         url: window.location.href,
       });
       console.log("✅ TikTok event tracked: Join WhatsApp Group");
