@@ -5,8 +5,8 @@ import { FaWhatsapp } from "react-icons/fa";
 export default function LandingPage() {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
 
-  const whatsappDeepLink = "whatsapp://chat?code=C6eOrclQZfY6LLUW9GVjhq"; // triggers "Open with WhatsApp"
-  const whatsappFallback = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq"; // fallback for browsers
+  const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH"; // triggers "Open with WhatsApp"
+  const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH"; // fallback for browsers
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
