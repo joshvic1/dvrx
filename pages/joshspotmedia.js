@@ -4,7 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 
 export default function LandingPage() {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH"; // triggers "Open with WhatsApp"
   const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH"; // fallback for browsers
 
@@ -21,30 +21,25 @@ export default function LandingPage() {
   }, []);
 
   // ✅ Add TikTok Pixel tracking here
-  const handleClick = () => {
-    // ✅ Ensure TikTok Pixel is available
-    if (typeof window !== "undefined" && window.ttq) {
-      try {
-        window.ttq.track("ClickButton", {
-          content_name: "Join WhatsApp Group",
-          page: window.location.pathname,
-        });
-        console.log("✅ TikTok ClickButton event fired!");
-      } catch (err) {
-        console.error("❌ TikTok event error:", err);
-      }
-    } else {
-      console.warn("⚠️ TikTok Pixel not ready yet.");
+  const handleClick = async () => {
+    try {
+      await fetch(`${API_URL}/api/tiktok-event`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event: "ClickButton" }),
+      });
+    } catch (err) {
+      console.error("Error sending TikTok event:", err);
     }
 
-    // ✅ WhatsApp redirect logic
+    // WhatsApp redirect logic
     if (!isTikTokBrowser) {
+      window.location.href = whatsappDeepLink;
       setTimeout(() => {
-        window.location.href = whatsappDeepLink;
-        setTimeout(() => {
-          window.location.href = whatsappFallback;
-        }, 1000);
-      }, 300); // small delay to ensure TikTok tracks the click
+        window.location.href = whatsappFallback;
+      }, 1000);
     } else {
       window.location.href = whatsappFallback;
     }
