@@ -1,10 +1,36 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
 
 export default function LandingPage() {
+  const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
+
+  const whatsappDeepLink = "whatsapp://chat?code=C6eOrclQZfY6LLUW9GVjhq"; // triggers "Open with WhatsApp"
+  const whatsappFallback = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq"; // fallback for browsers
+
+  useEffect(() => {
+    const ua = navigator.userAgent || "";
+    setIsTikTokBrowser(/tiktok/i.test(ua));
+  }, []);
+
+  const handleClick = () => {
+    if (!isTikTokBrowser) {
+      // try to trigger the WhatsApp chooser popup
+      window.location.href = whatsappDeepLink;
+
+      // fallback to normal link if WhatsApp isn't installed
+      setTimeout(() => {
+        window.location.href = whatsappFallback;
+      }, 1000);
+    } else {
+      // TikTok browser – just open fallback link (TikTok will show "Be careful" prompt)
+      window.location.href = whatsappFallback;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black-500 via-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
-      {/* Floating animated shapes */}
+    <div className="min-h-screen bg-gradient-to-b from-black via-purple-700 to-indigo-800 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
+      {/* Floating shapes */}
       <motion.div
         className="absolute top-10 left-10 w-16 h-16 bg-yellow-400 rounded-full blur-xl opacity-60"
         animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
@@ -39,17 +65,29 @@ export default function LandingPage() {
         convert customers.
       </motion.p>
 
+      {/* TikTok Notice */}
+      {isTikTokBrowser && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="mt-6 bg-yellow-500/20 border border-yellow-400 text-yellow-200 rounded-xl px-5 py-3 text-center max-w-md"
+        >
+          ⚠️ You’re using TikTok’s in-app browser. When you click below, TikTok
+          may show a small warning — just tap <b>“Continue”</b> to open
+          WhatsApp.
+        </motion.div>
+      )}
+
       {/* Call to Action Button */}
-      <motion.a
-        href="https://chat.whatsapp.com/BxtqScIqT5rJlZeSmpZOxe" // 🔗 Replace with your WhatsApp link
-        target="_blank"
-        rel="noopener noreferrer"
+      <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
+        onClick={handleClick}
         className="mt-10 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg flex items-center gap-3 text-lg"
       >
         <FaWhatsapp size={24} /> Join WhatsApp Group
-      </motion.a>
+      </motion.button>
 
       {/* Floating bottom banner */}
       <motion.div
@@ -65,4 +103,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
 LandingPage.hideLayout = true;
