@@ -13,17 +13,26 @@ export default function LandingPage() {
     setIsTikTokBrowser(/tiktok/i.test(ua));
   }, []);
 
+  // ✅ Add TikTok Pixel tracking here
   const handleClick = () => {
-    if (!isTikTokBrowser) {
-      // try to trigger the WhatsApp chooser popup
-      window.location.href = whatsappDeepLink;
+    // 🔹 TikTok tracking event
+    if (typeof window !== "undefined" && window.ttq) {
+      window.ttq.track("ClickButton", {
+        content_name: "Join WhatsApp Group",
+        value: 0,
+        currency: "NGN",
+        url: window.location.href,
+      });
+      console.log("✅ TikTok event tracked: Join WhatsApp Group");
+    }
 
-      // fallback to normal link if WhatsApp isn't installed
+    // 🔹 WhatsApp redirect logic
+    if (!isTikTokBrowser) {
+      window.location.href = whatsappDeepLink;
       setTimeout(() => {
         window.location.href = whatsappFallback;
       }, 1000);
     } else {
-      // TikTok browser – just open fallback link (TikTok will show "Be careful" prompt)
       window.location.href = whatsappFallback;
     }
   };
