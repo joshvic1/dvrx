@@ -1,68 +1,95 @@
-import { motion } from "framer-motion";
-import { FaWhatsapp } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 
-export default function LandingPage() {
+const RedirectToWhatsApp = () => {
+  const [isTikTokBrowser, setIsTikTokBrowser] = useState(null);
+  const whatsappLink = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return; // ensure it runs only in browser
+
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isTikTok = /tiktok/i.test(ua);
+    setIsTikTokBrowser(isTikTok);
+
+    if (!isTikTok) {
+      window.location.replace(whatsappLink);
+      return;
+    }
+
+    // Try to open WhatsApp (may fail silently)
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = whatsappLink;
+    document.body.appendChild(iframe);
+
+    const timer = setTimeout(() => {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // While checking environment
+  if (isTikTokBrowser === null) {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h2>Preparing your redirect...</h2>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black-500 via-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
-      {/* Floating animated shapes */}
-      <motion.div
-        className="absolute top-10 left-10 w-16 h-16 bg-yellow-400 rounded-full blur-xl opacity-60"
-        animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
-        transition={{ repeat: Infinity, duration: 6 }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-12 w-20 h-20 bg-green-400 rounded-full blur-xl opacity-50"
-        animate={{ y: [0, -30, 0] }}
-        transition={{ repeat: Infinity, duration: 5 }}
-      />
-
-      {/* Hero Section */}
-      <motion.h1
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg"
-      >
-        🚀 Learn How to Run TikTok Ads <br /> That Drive{" "}
-        <span className="text-yellow-300">Massive Sales!</span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="mt-6 text-lg md:text-2xl text-center max-w-2xl"
-      >
-        Join my{" "}
-        <span className="font-bold text-green-300">FREE WhatsApp class</span>{" "}
-        where I’ll show you step-by-step how to launch TikTok ads that actually
-        convert customers.
-      </motion.p>
-
-      {/* Call to Action Button */}
-      <motion.a
-        href="https://chat.whatsapp.com/BxtqScIqT5rJlZeSmpZOxe" // 🔗 Replace with your WhatsApp link
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        className="mt-10 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg flex items-center gap-3 text-lg"
-      >
-        <FaWhatsapp size={24} /> Join WhatsApp Group
-      </motion.a>
-
-      {/* Floating bottom banner */}
-      <motion.div
-        className="absolute bottom-6 bg-white/10 backdrop-blur-md px-6 py-3 rounded-xl shadow-md"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-      >
-        <p className="text-sm md:text-base">
-          🔥 Limited spots available – Don’t miss out!
-        </p>
-      </motion.div>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+        textAlign: "center",
+      }}
+    >
+      {isTikTokBrowser ? (
+        <>
+          <h2>⚠️ TikTok Browser Detected</h2>
+          <p>
+            Tap the <b>three dots (⋯)</b> at the top-right corner and choose{" "}
+            <b>“Open in browser”</b> to continue.
+          </p>
+          <button
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              background: "#25D366",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              window.location.href = whatsappLink;
+            }}
+          >
+            Try Opening WhatsApp
+          </button>
+        </>
+      ) : (
+        <h2>Redirecting you to WhatsApp...</h2>
+      )}
     </div>
   );
-}
-LandingPage.hideLayout = true;
+};
+
+export default RedirectToWhatsApp;
+
+RedirectToWhatsApp.hideLayout = true;
