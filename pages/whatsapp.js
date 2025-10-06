@@ -72,4 +72,4 @@ const RedirectToWhatsApp = () => {
 };
 
 export default RedirectToWhatsApp;
-LandingPage.hideLayout = true;
+RedirectToWhatsApp.hideLayout = true;
