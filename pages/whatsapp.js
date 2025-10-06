@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const RedirectToWhatsApp = () => {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
-  const whatsappLink = "https://chat.whatsapp.com/BxtqScIqT5rJlZeSmpZOxe"; // replace with your own number
+  const whatsappLink = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq"; // replace with your own number
 
   useEffect(() => {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
