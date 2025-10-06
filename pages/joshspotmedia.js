@@ -1,53 +1,40 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
+import { v4 as uuidv4 } from "uuid"; // add this import
 
 export default function LandingPage() {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH"; // triggers "Open with WhatsApp"
-  const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH"; // fallback for browsers
+  const [externalId, setExternalId] = useState("");
+
+  const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH";
+  const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH";
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
     setIsTikTokBrowser(/tiktok/i.test(ua));
-  }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.track("PageView");
-      console.log("✅ TikTok PageView event fired");
+    // generate or retrieve external_id
+    let existingId = localStorage.getItem("external_id");
+    if (!existingId) {
+      existingId = uuidv4(); // generate new
+      localStorage.setItem("external_id", existingId);
     }
+    setExternalId(existingId);
   }, []);
 
-  // ✅ Add TikTok Pixel tracking here
   const handleClick = async () => {
-    const eventId = Date.now().toString(); // unique ID for deduplication
+    // Send to TikTok API (server-side endpoint)
+    await fetch("/api/tiktok-event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event: "ClickButton",
+        external_id: externalId,
+      }),
+    });
 
-    // Send event to TikTok pixel (client-side)
-    if (window.ttq) {
-      window.ttq.track("JoinWhatsAppGroup", {
-        value: 0,
-        currency: "NGN",
-        event_id: eventId, // include event_id
-      });
-    }
-
-    // Send same event to your backend (server-side)
-    try {
-      await fetch("/api/tiktok-event", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event: "JoinWhatsAppGroup",
-          event_id: eventId,
-        }),
-      });
-    } catch (err) {
-      console.error("Error sending TikTok server event:", err);
-    }
-
-    // Now handle WhatsApp redirection
+    // Redirect user
     if (!isTikTokBrowser) {
       window.location.href = whatsappDeepLink;
       setTimeout(() => (window.location.href = whatsappFallback), 1000);
@@ -58,56 +45,18 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-700 to-indigo-800 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
-      {/* Floating shapes */}
-      <motion.div
-        className="absolute top-10 left-10 w-16 h-16 bg-yellow-400 rounded-full blur-xl opacity-60"
-        animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
-        transition={{ repeat: Infinity, duration: 6 }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-12 w-20 h-20 bg-green-400 rounded-full blur-xl opacity-50"
-        animate={{ y: [0, -30, 0] }}
-        transition={{ repeat: Infinity, duration: 5 }}
-      />
-
-      {/* Hero Section */}
-      <motion.h1
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg"
-      >
-        🚀 Learn How to Run TikTok Ads <br /> That Drive{" "}
-        <span className="text-yellow-300">Massive Sales!</span>
+      <motion.h1 className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg">
+        🚀 Learn How to Run TikTok Ads <br />
+        That Drive <span className="text-yellow-300">Massive Sales!</span>
       </motion.h1>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="mt-6 text-lg md:text-2xl text-center max-w-2xl"
-      >
+      <motion.p className="mt-6 text-lg md:text-2xl text-center max-w-2xl">
         Join my{" "}
         <span className="font-bold text-green-300">FREE WhatsApp class</span>{" "}
         where I’ll show you step-by-step how to launch TikTok ads that actually
         convert customers.
       </motion.p>
 
-      {/* TikTok Notice */}
-      {isTikTokBrowser && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-6 bg-yellow-500/20 border border-yellow-400 text-yellow-200 rounded-xl px-5 py-3 text-center max-w-md"
-        >
-          ⚠️ You’re using TikTok’s in-app browser. When you click below, TikTok
-          may show a small warning — just tap <b>“Continue”</b> to open
-          WhatsApp.
-        </motion.div>
-      )}
-
-      {/* Call to Action Button */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -116,18 +65,6 @@ export default function LandingPage() {
       >
         <FaWhatsapp size={24} /> Join WhatsApp Group
       </motion.button>
-
-      {/* Floating bottom banner */}
-      <motion.div
-        className="absolute bottom-6 bg-white/10 backdrop-blur-md px-6 py-3 rounded-xl shadow-md"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-      >
-        <p className="text-sm md:text-base">
-          🔥 Limited spots available – Don’t miss out!
-        </p>
-      </motion.div>
     </div>
   );
 }
