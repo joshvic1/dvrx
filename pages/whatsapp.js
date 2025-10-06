@@ -1,31 +1,51 @@
 import React, { useEffect, useState } from "react";
 
 const RedirectToWhatsApp = () => {
-  const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
-  const whatsappLink = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq"; // replace with your own number
+  const [isTikTokBrowser, setIsTikTokBrowser] = useState(null);
+  const whatsappLink = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq";
 
   useEffect(() => {
+    if (typeof window === "undefined") return; // ensure it runs only in browser
+
     const ua = navigator.userAgent || navigator.vendor || window.opera;
     const isTikTok = /tiktok/i.test(ua);
     setIsTikTokBrowser(isTikTok);
 
     if (!isTikTok) {
-      // If not TikTok, redirect immediately to WhatsApp
-      window.location.href = whatsappLink;
-    } else {
-      // Try to break out of TikTok browser
-      const now = Date.now();
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = whatsappLink;
-      document.body.appendChild(iframe);
-
-      // After a short delay, prompt the user
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-      }, 2000);
+      window.location.replace(whatsappLink);
+      return;
     }
+
+    // Try to open WhatsApp (may fail silently)
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = whatsappLink;
+    document.body.appendChild(iframe);
+
+    const timer = setTimeout(() => {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  // While checking environment
+  if (isTikTokBrowser === null) {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h2>Preparing your redirect...</h2>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -57,7 +77,6 @@ const RedirectToWhatsApp = () => {
               cursor: "pointer",
             }}
             onClick={() => {
-              // Attempt manual redirect if user clicks
               window.location.href = whatsappLink;
             }}
           >
@@ -72,4 +91,5 @@ const RedirectToWhatsApp = () => {
 };
 
 export default RedirectToWhatsApp;
+
 RedirectToWhatsApp.hideLayout = true;
