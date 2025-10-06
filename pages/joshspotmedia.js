@@ -22,24 +22,35 @@ export default function LandingPage() {
 
   // ✅ Add TikTok Pixel tracking here
   const handleClick = async () => {
-    try {
-      await fetch(`${API_URL}/api/tiktok-event`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ event: "ClickButton" }),
+    const eventId = Date.now().toString(); // unique ID for deduplication
+
+    // Send event to TikTok pixel (client-side)
+    if (window.ttq) {
+      window.ttq.track("JoinWhatsAppGroup", {
+        value: 0,
+        currency: "NGN",
+        event_id: eventId, // include event_id
       });
-    } catch (err) {
-      console.error("Error sending TikTok event:", err);
     }
 
-    // WhatsApp redirect logic
+    // Send same event to your backend (server-side)
+    try {
+      await fetch("/api/tiktok-event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event: "JoinWhatsAppGroup",
+          event_id: eventId,
+        }),
+      });
+    } catch (err) {
+      console.error("Error sending TikTok server event:", err);
+    }
+
+    // Now handle WhatsApp redirection
     if (!isTikTokBrowser) {
       window.location.href = whatsappDeepLink;
-      setTimeout(() => {
-        window.location.href = whatsappFallback;
-      }, 1000);
+      setTimeout(() => (window.location.href = whatsappFallback), 1000);
     } else {
       window.location.href = whatsappFallback;
     }
