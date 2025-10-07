@@ -7,8 +7,8 @@ export default function LandingPage() {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
   const [externalId, setExternalId] = useState("");
 
-  const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH";
-  const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH";
+  const whatsappDeepLink = "whatsapp://chat?code=C6eOrclQZfY6LLUW9GVjhq";
+  const whatsappFallback = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq";
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
