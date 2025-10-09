@@ -1,95 +1,98 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
+import { v4 as uuidv4 } from "uuid";
 
-const RedirectToWhatsApp = () => {
-  const [isTikTokBrowser, setIsTikTokBrowser] = useState(null);
-  const whatsappLink = "https://chat.whatsapp.com/C6eOrclQZfY6LLUW9GVjhq";
+export default function RedirectToWhatsApp() {
+  const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
+  const [externalId, setExternalId] = useState("");
+
+  const whatsappDeepLink = "whatsapp://chat?code=IoFeOhgZ8y6GCogEKQA2VX";
+  const whatsappFallback = "https://chat.whatsapp.com/IoFeOhgZ8y6GCogEKQA2VX";
 
   useEffect(() => {
-    if (typeof window === "undefined") return; // ensure it runs only in browser
-
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const ua = navigator.userAgent || "";
     const isTikTok = /tiktok/i.test(ua);
     setIsTikTokBrowser(isTikTok);
 
-    if (!isTikTok) {
-      window.location.replace(whatsappLink);
-      return;
+    // generate or retrieve external_id
+    let existingId = localStorage.getItem("external_id");
+    if (!existingId) {
+      existingId = uuidv4();
+      localStorage.setItem("external_id", existingId);
     }
+    setExternalId(existingId);
 
-    // Try to open WhatsApp (may fail silently)
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = whatsappLink;
-    document.body.appendChild(iframe);
-
-    const timer = setTimeout(() => {
-      if (document.body.contains(iframe)) {
-        document.body.removeChild(iframe);
+    // auto-trigger redirect logic
+    const triggerRedirect = async () => {
+      try {
+        // send tracking event
+        await fetch("/api/tiktok-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            event: "AutoRedirect",
+            external_id: existingId,
+          }),
+        });
+      } catch (err) {
+        console.warn("Tracking failed:", err);
       }
-    }, 2000);
 
+      // attempt deep link first (triggers system chooser popup)
+      if (!isTikTok) {
+        window.location.href = whatsappDeepLink;
+
+        // fallback if WhatsApp isn’t installed
+        setTimeout(() => {
+          window.location.href = whatsappFallback;
+        }, 1000);
+      } else {
+        // TikTok in-app browser → normal link (TikTok will show its “Be careful” prompt)
+        window.location.href = whatsappFallback;
+      }
+    };
+
+    // slight delay to ensure page mounts cleanly before redirecting
+    const timer = setTimeout(triggerRedirect, 800);
     return () => clearTimeout(timer);
   }, []);
 
-  // While checking environment
-  if (isTikTokBrowser === null) {
-    return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <h2>Preparing your redirect...</h2>
-      </div>
-    );
-  }
-
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
-        textAlign: "center",
-      }}
-    >
-      {isTikTokBrowser ? (
-        <>
-          <h2>⚠️ TikTok Browser Detected</h2>
-          <p>
-            Tap the <b>three dots (⋯)</b> at the top-right corner and choose{" "}
-            <b>“Open in browser”</b> to continue.
-          </p>
-          <button
-            style={{
-              marginTop: "20px",
-              padding: "10px 20px",
-              borderRadius: "8px",
-              background: "#25D366",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              window.location.href = whatsappLink;
-            }}
-          >
-            Try Opening WhatsApp
-          </button>
-        </>
-      ) : (
-        <h2>Redirecting you to WhatsApp...</h2>
-      )}
+    <div className="min-h-screen bg-gradient-to-b from-black via-purple-700 to-indigo-800 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
+      <motion.h1
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg"
+      >
+        🚀 Learn How to Run TikTok Ads <br />
+        That Drive <span className="text-yellow-300">Massive Sales!</span>
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="mt-6 text-lg md:text-2xl text-center max-w-2xl"
+      >
+        Join my{" "}
+        <span className="font-bold text-green-300">FREE WhatsApp class</span>{" "}
+        where I’ll show you step-by-step how to launch TikTok ads that actually
+        convert customers.
+      </motion.p>
+
+      {/* fallback manual button just in case redirect fails */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => (window.location.href = whatsappFallback)}
+        className="mt-10 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg flex items-center gap-3 text-lg"
+      >
+        <FaWhatsapp size={24} /> Join WhatsApp Group
+      </motion.button>
     </div>
   );
-};
-
-export default RedirectToWhatsApp;
+}
 
 RedirectToWhatsApp.hideLayout = true;
