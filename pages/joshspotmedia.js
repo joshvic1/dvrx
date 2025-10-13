@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
-import { v4 as uuidv4 } from "uuid"; // add this import
+import { v4 as uuidv4 } from "uuid";
 
 export default function LandingPage() {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
@@ -17,19 +17,67 @@ export default function LandingPage() {
     // generate or retrieve external_id
     let existingId = localStorage.getItem("external_id");
     if (!existingId) {
-      existingId = uuidv4(); // generate new
+      existingId = uuidv4();
       localStorage.setItem("external_id", existingId);
     }
     setExternalId(existingId);
+
+    // ✅ Identify user to TikTok Pixel
+    if (window.ttq) {
+      window.ttq.identify({
+        external_id: existingId, // You can hash this server-side if TikTok requires it
+      });
+
+      // ✅ Track page view (ViewContent)
+      window.ttq.track("ViewContent", {
+        contents: [
+          {
+            content_id: "landing_page_001",
+            content_type: "page",
+            content_name: "TikTok Ads Free Class",
+          },
+        ],
+        value: 0,
+        currency: "NGN",
+      });
+    }
   }, []);
 
   const handleClick = async () => {
-    // Send to TikTok API (server-side endpoint)
+    if (window.ttq) {
+      // Track the button click
+      window.ttq.track("InitiateCheckout", {
+        contents: [
+          {
+            content_id: "whatsapp_join_click",
+            content_type: "button",
+            content_name: "Join WhatsApp Group",
+          },
+        ],
+        value: 0,
+        currency: "NGN",
+      });
+
+      // 🔥 Track CompleteRegistration (successful join intent)
+      window.ttq.track("CompleteRegistration", {
+        contents: [
+          {
+            content_id: "whatsapp_group_registration",
+            content_type: "signup",
+            content_name: "TikTok Ads Free Class",
+          },
+        ],
+        value: 0,
+        currency: "NGN",
+      });
+    }
+
+    // Optional: log it to your backend
     await fetch("/api/tiktok-event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        event: "ClickButton",
+        event: "CompleteRegistration",
         external_id: externalId,
       }),
     });
