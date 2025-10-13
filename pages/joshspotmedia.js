@@ -10,14 +10,13 @@ export default function LandingPage() {
   const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH";
   const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH";
 
-  // ✅ your API base URL (edit in .env as NEXT_PUBLIC_API_URL)
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
     setIsTikTokBrowser(/tiktok/i.test(ua));
 
-    // Generate or retrieve external_id
+    // generate or retrieve external_id
     let existingId = localStorage.getItem("external_id");
     if (!existingId) {
       existingId = uuidv4();
@@ -30,15 +29,20 @@ export default function LandingPage() {
       window.ttq.identify({ external_id: existingId });
 
       window.ttq.track("ViewContent", {
+        content_id: "whatsapp_join_click", // ✅ moved to root
+        content_type: "product", // ✅ required by TikTok
+        content_name: "Join WhatsApp Group",
         contents: [
           {
             content_id: "whatsapp_join_click",
-            content_type: "product", // ✅ valid type
+            content_type: "product",
             content_name: "Join WhatsApp Group",
           },
         ],
-        value: 0, // ✅ must be a number
+        value: 0,
         currency: "NGN",
+        event_time: Math.floor(Date.now() / 1000),
+        url: window.location.href,
       });
     }
 
@@ -49,19 +53,24 @@ export default function LandingPage() {
       body: JSON.stringify({
         event: "ViewContent",
         external_id: existingId,
-        value: 0,
-        currency: "NGN",
         content_id: "whatsapp_join_click",
         content_type: "product",
         content_name: "Join WhatsApp Group",
+        value: 0,
+        currency: "NGN",
+        event_time: Math.floor(Date.now() / 1000),
+        url: window.location.href,
       }),
     });
   }, []);
 
   const handleClick = async () => {
     if (window.ttq) {
-      // Track InitiateCheckout
+      // ✅ InitiateCheckout
       window.ttq.track("InitiateCheckout", {
+        content_id: "whatsapp_join_click",
+        content_type: "product",
+        content_name: "Join WhatsApp Group",
         contents: [
           {
             content_id: "whatsapp_join_click",
@@ -71,10 +80,15 @@ export default function LandingPage() {
         ],
         value: 0,
         currency: "NGN",
+        event_time: Math.floor(Date.now() / 1000),
+        url: window.location.href,
       });
 
-      // Track CompleteRegistration
+      // ✅ CompleteRegistration
       window.ttq.track("CompleteRegistration", {
+        content_id: "whatsapp_group_registration",
+        content_type: "product",
+        content_name: "TikTok Ads Free Class",
         contents: [
           {
             content_id: "whatsapp_group_registration",
@@ -84,25 +98,29 @@ export default function LandingPage() {
         ],
         value: 0,
         currency: "NGN",
+        event_time: Math.floor(Date.now() / 1000),
+        url: window.location.href,
       });
     }
 
-    // ✅ Send to your backend as well
+    // ✅ Send to your backend too
     await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         event: "CompleteRegistration",
         external_id: externalId,
-        value: 0,
-        currency: "NGN",
         content_id: "whatsapp_group_registration",
         content_type: "product",
         content_name: "TikTok Ads Free Class",
+        value: 0,
+        currency: "NGN",
+        event_time: Math.floor(Date.now() / 1000),
+        url: window.location.href,
       }),
     });
 
-    // ✅ Redirect user
+    // ✅ Redirect
     if (!isTikTokBrowser) {
       window.location.href = whatsappDeepLink;
       setTimeout(() => (window.location.href = whatsappFallback), 1000);
