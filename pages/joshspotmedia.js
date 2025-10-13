@@ -10,39 +10,14 @@ export default function LandingPage() {
   const whatsappDeepLink = "whatsapp://chat?code=Irrp5QQCN2J2sXrMpNOnFH";
   const whatsappFallback = "https://chat.whatsapp.com/Irrp5QQCN2J2sXrMpNOnFH";
 
-  // ✅ Helper: Send event to backend
-  const sendTikTokEvent = async (eventName, props = {}) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            event: eventName,
-            external_id: externalId,
-            value: props.value || 0,
-            currency: props.currency || "NGN",
-            content_id: props.content_id || "",
-            content_type: props.content_type || "",
-            content_name: props.content_name || "",
-            url: window.location.href,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      console.log(`✅ TikTok ${eventName} event sent:`, data);
-    } catch (error) {
-      console.error("❌ TikTok event failed:", error);
-    }
-  };
+  // ✅ your API base URL (edit in .env as NEXT_PUBLIC_API_URL)
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
     setIsTikTokBrowser(/tiktok/i.test(ua));
 
-    // generate or retrieve external_id
+    // Generate or retrieve external_id
     let existingId = localStorage.getItem("external_id");
     if (!existingId) {
       existingId = uuidv4();
@@ -50,70 +25,81 @@ export default function LandingPage() {
     }
     setExternalId(existingId);
 
-    // ✅ Identify user and track ViewContent
+    // ✅ Identify + Track ViewContent
     if (window.ttq) {
       window.ttq.identify({ external_id: existingId });
+
       window.ttq.track("ViewContent", {
-        value: 0,
+        contents: [
+          {
+            content_id: "whatsapp_join_click",
+            content_type: "product", // ✅ valid type
+            content_name: "Join WhatsApp Group",
+          },
+        ],
+        value: 0, // ✅ must be a number
         currency: "NGN",
-        content_id: "landing_page_view",
-        content_type: "page",
-        content_name: "Joshspot Media WhatsApp Landing",
-        url: window.location.href,
       });
     }
 
-    // ✅ Send ViewContent server-side
-    sendTikTokEvent("ViewContent", {
-      value: 0,
-      currency: "NGN",
-      content_id: "landing_page_view",
-      content_type: "page",
-      content_name: "Joshspot Media WhatsApp Landing",
+    // ✅ Also send server-side event
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event: "ViewContent",
+        external_id: existingId,
+        value: 0,
+        currency: "NGN",
+        content_id: "whatsapp_join_click",
+        content_type: "product",
+        content_name: "Join WhatsApp Group",
+      }),
     });
   }, []);
 
   const handleClick = async () => {
-    // ✅ Pixel-side InitiateCheckout
     if (window.ttq) {
+      // Track InitiateCheckout
       window.ttq.track("InitiateCheckout", {
+        contents: [
+          {
+            content_id: "whatsapp_join_click",
+            content_type: "product",
+            content_name: "Join WhatsApp Group",
+          },
+        ],
         value: 0,
         currency: "NGN",
-        content_id: "whatsapp_join_click",
-        content_type: "button",
-        content_name: "Join WhatsApp Group",
-        url: window.location.href,
+      });
+
+      // Track CompleteRegistration
+      window.ttq.track("CompleteRegistration", {
+        contents: [
+          {
+            content_id: "whatsapp_group_registration",
+            content_type: "product",
+            content_name: "TikTok Ads Free Class",
+          },
+        ],
+        value: 0,
+        currency: "NGN",
       });
     }
 
-    // ✅ Server-side InitiateCheckout
-    await sendTikTokEvent("InitiateCheckout", {
-      value: 0,
-      currency: "NGN",
-      content_id: "whatsapp_join_click",
-      content_type: "button",
-      content_name: "Join WhatsApp Group",
-    });
-
-    // ✅ Pixel-side CompleteRegistration
-    if (window.ttq) {
-      window.ttq.track("CompleteRegistration", {
+    // ✅ Send to your backend as well
+    await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event: "CompleteRegistration",
+        external_id: externalId,
         value: 0,
         currency: "NGN",
         content_id: "whatsapp_group_registration",
-        content_type: "signup",
+        content_type: "product",
         content_name: "TikTok Ads Free Class",
-        url: window.location.href,
-      });
-    }
-
-    // ✅ Server-side CompleteRegistration
-    await sendTikTokEvent("CompleteRegistration", {
-      value: 0,
-      currency: "NGN",
-      content_id: "whatsapp_group_registration",
-      content_type: "signup",
-      content_name: "TikTok Ads Free Class",
+      }),
     });
 
     // ✅ Redirect user
@@ -127,22 +113,12 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-700 to-indigo-800 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
-      <motion.h1
-        className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg"
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-      >
+      <motion.h1 className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg">
         🚀 Learn How to Run TikTok Ads <br />
         That Drive <span className="text-yellow-300">Massive Sales!</span>
       </motion.h1>
 
-      <motion.p
-        className="mt-6 text-lg md:text-2xl text-center max-w-2xl"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
+      <motion.p className="mt-6 text-lg md:text-2xl text-center max-w-2xl">
         Join my{" "}
         <span className="font-bold text-green-300">FREE WhatsApp class</span>{" "}
         where I’ll show you step-by-step how to launch TikTok ads that actually
