@@ -29,15 +29,15 @@ export default function LandingPage() {
       });
 
       // ✅ Track page view (ViewContent)
-      window.ttq.track("ViewContent", {
+      window.ttq.track("InitiateCheckout", {
         contents: [
           {
-            content_id: "landing_page_001",
-            content_type: "page",
-            content_name: "TikTok Ads Free Class",
+            content_id: "whatsapp_join_click",
+            content_type: "button",
+            content_name: "Join WhatsApp Group",
           },
         ],
-        value: 0,
+        value: 0, // ✅ number, not string
         currency: "NGN",
       });
     }
