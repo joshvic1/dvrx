@@ -10,28 +10,30 @@ export default function RedirectToWhatsApp() {
     const ua = navigator.userAgent || "";
     const isTikTokBrowser = /tiktok/i.test(ua);
 
-    // get or create external_id
+    // ✅ get or create external_id
     let externalId = localStorage.getItem("external_id");
     if (!externalId) {
       externalId = uuidv4();
       localStorage.setItem("external_id", externalId);
     }
 
-    // ✅ FIRE PIXEL (client-side)
-    if (window.ttq) {
+    // ✅ FIRE PIXEL (ViewContent)
+    if (typeof window !== "undefined" && window.ttq) {
       window.ttq.identify({ external_id: externalId });
       window.ttq.track("ViewContent", {
-        content_id: "whatsapp_redirect_page",
-        content_type: "product",
-        content_name: "Join WhatsApp Group Redirect",
-        value: 0,
+        contents: [
+          {
+            content_id: "whatsapp_redirect_page",
+            content_type: "product",
+            content_name: "Join WhatsApp Group Redirect",
+          },
+        ],
+        value: 0.0,
         currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: window.location.href,
       });
     }
 
-    // ✅ FIRE SERVER EVENT (backend)
+    // ✅ SEND SERVER EVENT (ViewContent)
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,22 +43,56 @@ export default function RedirectToWhatsApp() {
         content_id: "whatsapp_redirect_page",
         content_type: "product",
         content_name: "Join WhatsApp Group Redirect",
-        value: 0,
+        value: 0.0,
         currency: "NGN",
         event_time: Math.floor(Date.now() / 1000),
         url: window.location.href,
       }),
     }).catch(() => {});
 
-    // ✅ redirect AFTER a short delay
+    // ✅ Redirect after short delay (1.2s)
     const redirectTimer = setTimeout(() => {
       if (!isTikTokBrowser) {
         window.location.href = whatsappDeepLink;
-        setTimeout(() => (window.location.href = whatsappFallback), 800);
+        setTimeout(() => (window.location.href = whatsappFallback), 1000);
       } else {
         window.location.href = whatsappFallback;
       }
-    }, 1000000000200); // wait 1.2s before redirect
+
+      // ✅ FIRE "CompleteRegistration" AFTER redirect trigger
+      setTimeout(() => {
+        if (window.ttq) {
+          window.ttq.track("CompleteRegistration", {
+            contents: [
+              {
+                content_id: "whatsapp_redirect_success",
+                content_type: "product",
+                content_name: "Joined WhatsApp Group",
+              },
+            ],
+            value: 0.0,
+            currency: "NGN",
+          });
+        }
+
+        // ✅ SEND SERVER EVENT (CompleteRegistration)
+        fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            event: "CompleteRegistration",
+            external_id: externalId,
+            content_id: "whatsapp_redirect_success",
+            content_type: "product",
+            content_name: "Joined WhatsApp Group",
+            value: 0.0,
+            currency: "NGN",
+            event_time: Math.floor(Date.now() / 1000),
+            url: window.location.href,
+          }),
+        }).catch(() => {});
+      }, 2000); // fire after redirect
+    }, 1200); // redirect after 1.2s
 
     return () => clearTimeout(redirectTimer);
   }, []);
