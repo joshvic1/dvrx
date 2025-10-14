@@ -50,10 +50,10 @@ export default function RedirectToWhatsApp() {
       }),
     }).catch(() => {});
 
-    // ✅ Fire "Purchase" event just before redirect (so TikTok can receive it)
+    // ✅ Fire "CompleteRegistration" event before redirect
     const eventTimer = setTimeout(() => {
       if (window.ttq) {
-        window.ttq.track("Purchase", {
+        window.ttq.track("CompleteRegistration", {
           contents: [
             {
               content_id: "whatsapp_join_success",
@@ -66,12 +66,12 @@ export default function RedirectToWhatsApp() {
         });
       }
 
-      // ✅ Send server event for Purchase
+      // ✅ Send server event for CompleteRegistration
       fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          event: "Purchase",
+          event: "CompleteRegistration",
           external_id: externalId,
           content_id: "whatsapp_join_success",
           content_type: "product",
@@ -83,7 +83,7 @@ export default function RedirectToWhatsApp() {
         }),
       }).catch(() => {});
 
-      // ✅ Redirect after purchase event has fired
+      // ✅ Redirect after event fires
       setTimeout(() => {
         if (!isTikTokBrowser) {
           window.location.href = whatsappDeepLink;
@@ -92,7 +92,7 @@ export default function RedirectToWhatsApp() {
           window.location.href = whatsappFallback;
         }
       }, 800); // redirect 0.8s later
-    }, 1200); // wait 1.2s after load before firing Purchase
+    }, 1200); // wait 1.2s after load
 
     return () => clearTimeout(eventTimer);
   }, []);
