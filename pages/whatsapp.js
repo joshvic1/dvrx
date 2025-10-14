@@ -50,8 +50,8 @@ export default function RedirectToWhatsApp() {
       }),
     }).catch(() => {});
 
-    // ✅ Fire "CompleteRegistration" event before redirect
-    const eventTimer = setTimeout(() => {
+    // 🧩 Function to fire CompleteRegistration event
+    const fireCompleteRegistration = () => {
       if (window.ttq) {
         window.ttq.track("CompleteRegistration", {
           contents: [
@@ -66,7 +66,6 @@ export default function RedirectToWhatsApp() {
         });
       }
 
-      // ✅ Send server event for CompleteRegistration
       fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -82,19 +81,31 @@ export default function RedirectToWhatsApp() {
           url: window.location.href,
         }),
       }).catch(() => {});
+    };
 
-      // ✅ Redirect after event fires
-      setTimeout(() => {
-        if (!isTikTokBrowser) {
-          window.location.href = whatsappDeepLink;
-          setTimeout(() => (window.location.href = whatsappFallback), 1000);
-        } else {
-          window.location.href = whatsappFallback;
-        }
-      }, 800); // redirect 0.8s later
-    }, 1200); // wait 1.2s after load
+    // ✅ Listen for tab visibility change
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        // User likely switched to WhatsApp
+        fireCompleteRegistration();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    return () => clearTimeout(eventTimer);
+    // ✅ Redirect to WhatsApp after short delay
+    const redirectTimer = setTimeout(() => {
+      if (!isTikTokBrowser) {
+        window.location.href = whatsappDeepLink;
+        setTimeout(() => (window.location.href = whatsappFallback), 1000);
+      } else {
+        window.location.href = whatsappFallback;
+      }
+    }, 1200);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      clearTimeout(redirectTimer);
+    };
   }, []);
 
   return (
