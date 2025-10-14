@@ -28,7 +28,7 @@ export default function RedirectToWhatsApp() {
             content_name: "Join WhatsApp Group Redirect",
           },
         ],
-        value: 500.0,
+        value: 50.0,
         currency: "NGN",
       });
     }
@@ -43,7 +43,7 @@ export default function RedirectToWhatsApp() {
         content_id: "whatsapp_redirect_page",
         content_type: "product",
         content_name: "Join WhatsApp Group Redirect",
-        value: 500.0,
+        value: 50.0,
         currency: "NGN",
         event_time: Math.floor(Date.now() / 1000),
         url: window.location.href,
@@ -61,7 +61,7 @@ export default function RedirectToWhatsApp() {
               content_name: "Joined WhatsApp Group",
             },
           ],
-          value: 500.0,
+          value: 50.0,
           currency: "NGN",
         });
       }
@@ -75,7 +75,7 @@ export default function RedirectToWhatsApp() {
           content_id: "whatsapp_join_success",
           content_type: "product",
           content_name: "Joined WhatsApp Group",
-          value: 500.0,
+          value: 50.0,
           currency: "NGN",
           event_time: Math.floor(Date.now() / 1000),
           url: window.location.href,
