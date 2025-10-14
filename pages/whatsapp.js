@@ -10,14 +10,14 @@ export default function RedirectToWhatsApp() {
     const ua = navigator.userAgent || "";
     const isTikTokBrowser = /tiktok/i.test(ua);
 
-    // ✅ get or create external_id
+    // ✅ Get or create external_id
     let externalId = localStorage.getItem("external_id");
     if (!externalId) {
       externalId = uuidv4();
       localStorage.setItem("external_id", externalId);
     }
 
-    // ✅ FIRE PIXEL (ViewContent)
+    // ✅ Fire ViewContent pixel
     if (typeof window !== "undefined" && window.ttq) {
       window.ttq.identify({ external_id: externalId });
       window.ttq.track("ViewContent", {
@@ -28,12 +28,12 @@ export default function RedirectToWhatsApp() {
             content_name: "Join WhatsApp Group Redirect",
           },
         ],
-        value: 0.0,
+        value: 500.0,
         currency: "NGN",
       });
     }
 
-    // ✅ SEND SERVER EVENT (ViewContent)
+    // ✅ Send ViewContent server event
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -43,58 +43,58 @@ export default function RedirectToWhatsApp() {
         content_id: "whatsapp_redirect_page",
         content_type: "product",
         content_name: "Join WhatsApp Group Redirect",
-        value: 0.0,
+        value: 500.0,
         currency: "NGN",
         event_time: Math.floor(Date.now() / 1000),
         url: window.location.href,
       }),
     }).catch(() => {});
 
-    // ✅ Redirect after short delay (1.2s)
-    const redirectTimer = setTimeout(() => {
-      if (!isTikTokBrowser) {
-        window.location.href = whatsappDeepLink;
-        setTimeout(() => (window.location.href = whatsappFallback), 1000);
-      } else {
-        window.location.href = whatsappFallback;
+    // ✅ Fire "Purchase" event just before redirect (so TikTok can receive it)
+    const eventTimer = setTimeout(() => {
+      if (window.ttq) {
+        window.ttq.track("Purchase", {
+          contents: [
+            {
+              content_id: "whatsapp_join_success",
+              content_type: "product",
+              content_name: "Joined WhatsApp Group",
+            },
+          ],
+          value: 500.0,
+          currency: "NGN",
+        });
       }
 
-      // ✅ FIRE "CompleteRegistration" AFTER redirect trigger
+      // ✅ Send server event for Purchase
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event: "Purchase",
+          external_id: externalId,
+          content_id: "whatsapp_join_success",
+          content_type: "product",
+          content_name: "Joined WhatsApp Group",
+          value: 500.0,
+          currency: "NGN",
+          event_time: Math.floor(Date.now() / 1000),
+          url: window.location.href,
+        }),
+      }).catch(() => {});
+
+      // ✅ Redirect after purchase event has fired
       setTimeout(() => {
-        if (window.ttq) {
-          window.ttq.track("CompleteRegistration", {
-            contents: [
-              {
-                content_id: "whatsapp_redirect_success",
-                content_type: "product",
-                content_name: "Joined WhatsApp Group",
-              },
-            ],
-            value: 0.0,
-            currency: "NGN",
-          });
+        if (!isTikTokBrowser) {
+          window.location.href = whatsappDeepLink;
+          setTimeout(() => (window.location.href = whatsappFallback), 1000);
+        } else {
+          window.location.href = whatsappFallback;
         }
+      }, 800); // redirect 0.8s later
+    }, 1200); // wait 1.2s after load before firing Purchase
 
-        // ✅ SEND SERVER EVENT (CompleteRegistration)
-        fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            event: "CompleteRegistration",
-            external_id: externalId,
-            content_id: "whatsapp_redirect_success",
-            content_type: "product",
-            content_name: "Joined WhatsApp Group",
-            value: 0.0,
-            currency: "NGN",
-            event_time: Math.floor(Date.now() / 1000),
-            url: window.location.href,
-          }),
-        }).catch(() => {});
-      }, 2000); // fire after redirect
-    }, 1200); // redirect after 1.2s
-
-    return () => clearTimeout(redirectTimer);
+    return () => clearTimeout(eventTimer);
   }, []);
 
   return (
