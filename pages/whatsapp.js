@@ -10,14 +10,13 @@ export default function RedirectToWhatsApp() {
     const ua = navigator.userAgent || "";
     const isTikTokBrowser = /tiktok/i.test(ua);
 
-    // ✅ Get or create external_id
     let externalId = localStorage.getItem("external_id");
     if (!externalId) {
       externalId = uuidv4();
       localStorage.setItem("external_id", externalId);
     }
 
-    // ✅ Fire ViewContent pixel
+    // ✅ Step 1: Fire ViewContent
     if (typeof window !== "undefined" && window.ttq) {
       window.ttq.identify({ external_id: externalId });
       window.ttq.track("ViewContent", {
@@ -33,7 +32,6 @@ export default function RedirectToWhatsApp() {
       });
     }
 
-    // ✅ Send ViewContent server event
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,7 +48,7 @@ export default function RedirectToWhatsApp() {
       }),
     }).catch(() => {});
 
-    // 🧩 Function to fire CompleteRegistration event
+    // ✅ Step 2: Function to fire CompleteRegistration
     const fireCompleteRegistration = () => {
       if (window.ttq) {
         window.ttq.track("CompleteRegistration", {
@@ -83,38 +81,35 @@ export default function RedirectToWhatsApp() {
       }).catch(() => {});
     };
 
-    let hasFired = false;
+    let fired = false;
+    let whatsappOpened = false;
 
-    // ✅ Visibility trigger
+    // ✅ Step 3: Try to open WhatsApp deep link
+    const startTime = Date.now();
+    window.location.href = whatsappDeepLink;
+
+    // ⏱ Step 4: Detect if WhatsApp likely opened
+    // If user leaves tab (goes to WhatsApp), visibilitychange fires
     const handleVisibilityChange = () => {
-      if (!hasFired && document.visibilityState === "hidden") {
+      if (!fired && document.visibilityState === "hidden") {
+        whatsappOpened = true;
         fireCompleteRegistration();
-        hasFired = true;
+        fired = true;
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // ✅ Fallback timer trigger (fires if user stays 5s on page)
+    // 🧩 Step 5: After 1.5s, check if still visible (means WhatsApp failed)
     const fallbackTimer = setTimeout(() => {
-      if (!hasFired) {
-        fireCompleteRegistration();
-        hasFired = true;
-      }
-    }, 5000);
-
-    // ✅ Redirect user to WhatsApp
-    const redirectTimer = setTimeout(() => {
-      if (!isTikTokBrowser) {
-        window.location.href = whatsappDeepLink;
-        setTimeout(() => (window.location.href = whatsappFallback), 1200);
-      } else {
+      const elapsed = Date.now() - startTime;
+      if (!whatsappOpened && elapsed >= 1400) {
+        // Deep link failed — go to fallback, but DO NOT fire CompleteRegistration
         window.location.href = whatsappFallback;
       }
-    }, 1500);
+    }, 1400);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      clearTimeout(redirectTimer);
       clearTimeout(fallbackTimer);
     };
   }, []);
