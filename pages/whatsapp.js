@@ -56,7 +56,7 @@ export default function RedirectToWhatsApp() {
       } else {
         window.location.href = whatsappFallback;
       }
-    }, 1200); // wait 1.2s before redirect
+    }, 1000000000200); // wait 1.2s before redirect
 
     return () => clearTimeout(redirectTimer);
   }, []);
