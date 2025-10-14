@@ -83,28 +83,39 @@ export default function RedirectToWhatsApp() {
       }).catch(() => {});
     };
 
-    // ✅ Listen for tab visibility change
+    let hasFired = false;
+
+    // ✅ Visibility trigger
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        // User likely switched to WhatsApp
+      if (!hasFired && document.visibilityState === "hidden") {
         fireCompleteRegistration();
+        hasFired = true;
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // ✅ Redirect to WhatsApp after short delay
+    // ✅ Fallback timer trigger (fires if user stays 5s on page)
+    const fallbackTimer = setTimeout(() => {
+      if (!hasFired) {
+        fireCompleteRegistration();
+        hasFired = true;
+      }
+    }, 5000);
+
+    // ✅ Redirect user to WhatsApp
     const redirectTimer = setTimeout(() => {
       if (!isTikTokBrowser) {
         window.location.href = whatsappDeepLink;
-        setTimeout(() => (window.location.href = whatsappFallback), 1000);
+        setTimeout(() => (window.location.href = whatsappFallback), 1200);
       } else {
         window.location.href = whatsappFallback;
       }
-    }, 1200);
+    }, 1500);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       clearTimeout(redirectTimer);
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
