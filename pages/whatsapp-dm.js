@@ -2,11 +2,10 @@ import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function RedirectToWhatsAppDM() {
-  // ✅ Replace with your actual WhatsApp DM link
   const whatsappDeepLink =
     "https://wa.me/2348098945437?text=Hey%20Josh%2C%20I%20want%20to%20buy%20your%20training%20course%20for%205k..Please%20send%20your%20account%20number";
   const whatsappFallback =
-    "hhttps://wa.me/2348098945437?text=Hey%20Josh%2C%20I%20want%20to%20buy%20your%20training%20course%20for%205k..Please%20send%20your%20account%20number";
+    "https://wa.me/2348098945437?text=Hey%20Josh%2C%20I%20want%20to%20buy%20your%20training%20course%20for%205k..Please%20send%20your%20account%20number";
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
@@ -14,13 +13,14 @@ export default function RedirectToWhatsAppDM() {
     const ua = navigator.userAgent || "";
     const isTikTokBrowser = /tiktok/i.test(ua);
 
+    // ✅ Generate or get a persistent unique user ID
     let externalId = localStorage.getItem("external_id");
     if (!externalId) {
       externalId = uuidv4();
       localStorage.setItem("external_id", externalId);
     }
 
-    // ✅ Step 1: Fire ViewContent (separate from group join)
+    // ✅ Step 1: Fire ViewContent (page viewed)
     if (typeof window !== "undefined" && window.ttq) {
       window.ttq.identify({ external_id: externalId });
       window.ttq.track("ViewContent", {
@@ -36,6 +36,7 @@ export default function RedirectToWhatsAppDM() {
       });
     }
 
+    // Send to backend for tracking
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,10 +53,10 @@ export default function RedirectToWhatsAppDM() {
       }),
     }).catch(() => {});
 
-    // ✅ Step 2: Fire CompleteRegistration when WhatsApp DM is opened
+    // ✅ Step 2: Define CompleteRegistration trigger
     const fireCompleteRegistration = () => {
       if (window.ttq) {
-        window.ttq.track("Contact", {
+        window.ttq.track("CompleteRegistration", {
           contents: [
             {
               content_id: "whatsapp_dm_success",
@@ -72,7 +73,7 @@ export default function RedirectToWhatsAppDM() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          event: "Contact",
+          event: "CompleteRegistration",
           external_id: externalId,
           content_id: "whatsapp_dm_success",
           content_type: "product",
@@ -88,11 +89,11 @@ export default function RedirectToWhatsAppDM() {
     let fired = false;
     let whatsappOpened = false;
 
-    // ✅ Step 3: Try opening the DM link
+    // ✅ Step 3: Attempt WhatsApp deep link
     const startTime = Date.now();
     window.location.href = whatsappDeepLink;
 
-    // Detect if WhatsApp opened
+    // ✅ Step 4: Detect tab switch (user opened WhatsApp)
     const handleVisibilityChange = () => {
       if (!fired && document.visibilityState === "hidden") {
         whatsappOpened = true;
@@ -102,7 +103,7 @@ export default function RedirectToWhatsAppDM() {
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // ✅ Step 4: Fallback after 1.5s if WhatsApp didn’t open
+    // ✅ Step 5: Fallback if WhatsApp doesn’t open
     const fallbackTimer = setTimeout(() => {
       const elapsed = Date.now() - startTime;
       if (!whatsappOpened && elapsed >= 1400) {
@@ -110,6 +111,7 @@ export default function RedirectToWhatsAppDM() {
       }
     }, 1400);
 
+    // Cleanup
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       clearTimeout(fallbackTimer);
