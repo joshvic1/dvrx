@@ -131,25 +131,13 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-700 to-indigo-800 text-white flex flex-col items-center justify-center p-6 overflow-hidden relative">
-      <motion.h1 className="text-4xl md:text-6xl font-extrabold text-center drop-shadow-lg">
-        🚀 Learn How to Run TikTok Ads <br />
-        That Drive <span className="text-yellow-300">Massive Sales!</span>
-      </motion.h1>
-
-      <motion.p className="mt-6 text-lg md:text-2xl text-center max-w-2xl">
-        Join my{" "}
-        <span className="font-bold text-green-300">FREE WhatsApp class</span>{" "}
-        where I’ll show you step-by-step how to launch TikTok ads that actually
-        convert customers.
-      </motion.p>
-
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={handleClick}
         className="mt-10 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg flex items-center gap-3 text-lg"
       >
-        <FaWhatsapp size={24} /> Join WhatsApp Group
+        <FaWhatsapp size={24} /> Join Tiktok Training Class
       </motion.button>
     </div>
   );
