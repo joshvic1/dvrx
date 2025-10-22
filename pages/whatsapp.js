@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function RedirectToWhatsApp() {
-  const whatsappDeepLink = "whatsapp://chat?code=FHPdD98MuZeLYB1NZcwJUD";
-  const whatsappFallback = "https://chat.whatsapp.com/FHPdD98MuZeLYB1NZcwJUD";
+  const whatsappDeepLink = "whatsapp://chat?code=GJQ1wMwkvV9G4vnYF84qF3";
+  const whatsappFallback = "https://chat.whatsapp.com/GJQ1wMwkvV9G4vnYF84qF3";
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
   useEffect(() => {
