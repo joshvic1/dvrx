@@ -7,8 +7,8 @@ export default function LandingPage() {
   const [isTikTokBrowser, setIsTikTokBrowser] = useState(false);
   const [externalId, setExternalId] = useState("");
 
-  const whatsappDeepLink = "whatsapp://chat?code=JhuQzWQMYnYKirrN3NvrSSa";
-  const whatsappFallback = "https://chat.whatsapp.com/JhuQzWQMYnYKirrN3NvrSSa";
+  const whatsappDeepLink = "whatsapp://chat?code=FHPdD98MuZeLYB1NZcwJUD";
+  const whatsappFallback = "https://chat.whatsapp.com/FHPdD98MuZeLYB1NZcwJUD";
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
