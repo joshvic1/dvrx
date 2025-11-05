@@ -37,7 +37,7 @@ export default function JoinWhatsAppClassPage() {
             content_name: "Join WhatsApp Class CTA",
           },
         ],
-        value: 0,
+        value: 10,
         currency: "NGN",
         description: "User clicked Join WhatsApp Class button",
         event_time: Math.floor(Date.now() / 1000),
