@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
@@ -12,65 +12,23 @@ export default function JoinWhatsAppClassPage() {
   const whatsappFallback = "https://chat.whatsapp.com/JfsMT0ORUEm4e2AzQOrCH3";
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
-  // Fire ViewContent on page load and ensure we have an external_id
-  useEffect(() => {
-    let externalId = localStorage.getItem("external_id");
-    if (!externalId) {
-      externalId = uuidv4();
-      localStorage.setItem("external_id", externalId);
-    }
-
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.identify({ external_id: externalId });
-      window.ttq.track("ViewContent", {
-        contents: [
-          {
-            content_id: "whatsapp_join_landing",
-            content_type: "product",
-            content_name: "Join WhatsApp Class Landing",
-          },
-        ],
-        value: 0,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: window.location.href,
-      });
-    }
-
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "ViewContent",
-        external_id: externalId,
-        content_id: "whatsapp_join_landing",
-        content_type: "product",
-        content_name: "Join WhatsApp Class Landing",
-        value: 0,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: typeof window !== "undefined" ? window.location.href : "",
-      }),
-    }).catch(() => {});
-  }, []);
-
   const handleClick = async () => {
     setLoading(true);
 
     const ua = navigator.userAgent || "";
     const isTikTokBrowser = /tiktok/i.test(ua);
 
+    // Ensure user has external_id
     let externalId = localStorage.getItem("external_id");
     if (!externalId) {
       externalId = uuidv4();
       localStorage.setItem("external_id", externalId);
     }
 
-    // 🔥 Explicit TikTok Pixel ClickButton event
+    // ✅ FIRE ONLY CLICK BUTTON (PIXEL)
     if (typeof window !== "undefined" && window.ttq) {
       window.ttq.identify({ external_id: externalId });
 
-      // CLICK BUTTON (explicit)
       window.ttq.track("ClickButton", {
         contents: [
           {
@@ -85,38 +43,9 @@ export default function JoinWhatsAppClassPage() {
         event_time: Math.floor(Date.now() / 1000),
         url: window.location.href,
       });
-
-      // Optional funnel events
-      window.ttq.track("InitiateCheckout", {
-        contents: [
-          {
-            content_id: "whatsapp_join_click",
-            content_type: "product",
-            content_name: "Join WhatsApp Class",
-          },
-        ],
-        value: 0,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: window.location.href,
-      });
-
-      window.ttq.track("CompleteRegistration", {
-        contents: [
-          {
-            content_id: "whatsapp_group_registration",
-            content_type: "product",
-            content_name: "TikTok Ads Free Class",
-          },
-        ],
-        value: 0,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: window.location.href,
-      });
     }
 
-    // Send ClickButton to your backend as well
+    // ✅ SEND CLICK BUTTON TO BACKEND ONLY
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -133,27 +62,10 @@ export default function JoinWhatsAppClassPage() {
       }),
     }).catch(() => {});
 
-    // Also log CompleteRegistration server-side (to mirror pixel)
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "CompleteRegistration",
-        external_id: externalId,
-        content_id: "whatsapp_group_registration",
-        content_type: "product",
-        content_name: "TikTok Ads Free Class",
-        value: 0,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: typeof window !== "undefined" ? window.location.href : "",
-      }),
-    }).catch(() => {});
-
-    // Redirect Logic
+    // Redirect
     if (!isTikTokBrowser) {
       window.location.href = whatsappDeepLink;
-      setTimeout(() => (window.location.href = whatsappFallback), 1000);
+      setTimeout(() => (window.location.href = whatsappFallback), 800);
     } else {
       window.location.href = whatsappFallback;
     }
@@ -214,12 +126,11 @@ export default function JoinWhatsAppClassPage() {
           )}
         </div>
 
-        {/* CTA Button with TikTok-friendly attributes */}
+        {/* CTA Button */}
         <motion.button
           onClick={handleClick}
           whileTap={{ scale: 0.95 }}
           className="mt-6 w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-bold py-3 rounded-lg shadow-md flex items-center justify-center gap-2 text-lg"
-          // Helpful data attributes for some auto-capture setups
           data-tt-action="click"
           data-tt-event="ClickButton"
           data-tt-content-id="whatsapp_join_cta"
