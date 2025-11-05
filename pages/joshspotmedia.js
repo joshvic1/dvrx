@@ -55,7 +55,7 @@ export default function JoinWhatsAppClassPage() {
         content_id: "whatsapp_join_cta",
         content_type: "product",
         content_name: "Join WhatsApp Class CTA",
-        value: 0,
+        value: 10,
         currency: "NGN",
         event_time: Math.floor(Date.now() / 1000),
         url: typeof window !== "undefined" ? window.location.href : "",
