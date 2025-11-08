@@ -1,107 +1,65 @@
+"use client";
+
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function RedirectToWhatsApp() {
   const whatsappDeepLink = "whatsapp://chat?code=IG6yJtHhY1GAMTUGypw4p2";
   const whatsappFallback = "https://chat.whatsapp.com/IG6yJtHhY1GAMTUGypw4p2";
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
     const isTikTokBrowser = /tiktok/i.test(ua);
 
-    // ✅ Generate or reuse user ID
+    // Generate or reuse a unique ID for TikTok tracking consistency
     let externalId = localStorage.getItem("external_id");
     if (!externalId) {
       externalId = uuidv4();
       localStorage.setItem("external_id", externalId);
     }
 
-    // ✅ 1. Fire ViewContent (user landed on redirect page)
-    if (window.ttq) {
-      window.ttq.identify({ external_id: externalId });
-      window.ttq.track("ViewContent", {
-        contents: [
-          {
-            content_id: "whatsapp_redirect_page_group2",
-            content_type: "product",
-            content_name: "Join WhatsApp Group 2 Redirect",
-          },
-        ],
-        value: 50.0,
-        currency: "NGN",
-      });
-    }
-
-    // 🔄 Send to backend
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "ViewContent",
-        external_id: externalId,
-        content_id: "whatsapp_redirect_page_group2",
-        content_type: "product",
-        content_name: "Join WhatsApp Group 2 Redirect",
-        value: 50.0,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: window.location.href,
-      }),
-    }).catch(() => {});
-
-    // ✅ 2. Function to fire CompleteRegistration ONLY if WhatsApp actually opened
+    // ✅ Function to fire only CompleteRegistration event
     const fireCompleteRegistration = () => {
-      if (window.ttq) {
-        window.ttq.track("CompleteRegistration", {
-          contents: [
-            {
-              content_id: "whatsapp_join_success_group2",
-              content_type: "product",
-              content_name: "Joined WhatsApp Group 2",
-            },
-          ],
-          value: 50.0,
-          currency: "NGN",
-        });
+      if (typeof window !== "undefined" && window.ttq) {
+        // Wait a short delay to ensure TikTok pixel is fully loaded
+        setTimeout(() => {
+          window.ttq.identify({ external_id: externalId });
+          window.ttq.track("CompleteRegistration", {
+            contents: [
+              {
+                content_id: "whatsapp_join_success_group2",
+                content_type: "product",
+                content_name: "Joined WhatsApp Group 2",
+              },
+            ],
+            value: 0,
+            currency: "NGN",
+            description: "User successfully opened WhatsApp from redirect",
+            event_time: Math.floor(Date.now() / 1000),
+            url: window.location.href,
+          });
+        }, 300);
       }
-
-      fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event: "CompleteRegistration",
-          external_id: externalId,
-          content_id: "whatsapp_join_success_group2",
-          content_type: "product",
-          content_name: "Joined WhatsApp Group 2",
-          value: 50.0,
-          currency: "NGN",
-          event_time: Math.floor(Date.now() / 1000),
-          url: window.location.href,
-        }),
-      }).catch(() => {});
     };
 
-    // ✅ 3. Track redirect behavior
-    let registrationFired = false;
+    let eventFired = false;
     let whatsappOpened = false;
     const startTime = Date.now();
 
-    // Try opening WhatsApp app
+    // Try to open WhatsApp
     window.location.href = whatsappDeepLink;
 
-    // Detect if WhatsApp actually opened
+    // Detect if WhatsApp actually opened (user leaves the page)
     const handleVisibilityChange = () => {
-      if (!registrationFired && document.visibilityState === "hidden") {
+      if (!eventFired && document.visibilityState === "hidden") {
         whatsappOpened = true;
         fireCompleteRegistration();
-        registrationFired = true;
+        eventFired = true;
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Fallback if WhatsApp app doesn’t open
+    // If WhatsApp didn’t open, redirect to fallback link
     const fallbackTimer = setTimeout(() => {
       const elapsed = Date.now() - startTime;
       if (!whatsappOpened && elapsed >= 1400) {
@@ -109,6 +67,7 @@ export default function RedirectToWhatsApp() {
       }
     }, 1400);
 
+    // Cleanup
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       clearTimeout(fallbackTimer);
