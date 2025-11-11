@@ -31,7 +31,7 @@ export default function RedirectToWhatsApp() {
                 content_name: "Joined WhatsApp Group 2",
               },
             ],
-            value: 0,
+            value: 5,
             currency: "NGN",
             description: "User successfully opened WhatsApp from redirect",
             event_time: Math.floor(Date.now() / 1000),
