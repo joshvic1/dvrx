@@ -18,13 +18,12 @@ export default function RedirectToWhatsApp() {
       localStorage.setItem("external_id", externalId);
     }
 
-    // ✅ Function to fire only CompleteRegistration event
-    const fireCompleteRegistration = () => {
+    // ✅ Fire "Contact" event instead of "CompleteRegistration"
+    const fireContactEvent = () => {
       if (typeof window !== "undefined" && window.ttq) {
-        // Wait a short delay to ensure TikTok pixel is fully loaded
         setTimeout(() => {
           window.ttq.identify({ external_id: externalId });
-          window.ttq.track("CompleteRegistration", {
+          window.ttq.track("Contact", {
             contents: [
               {
                 content_id: "whatsapp_join_success_group2",
@@ -53,7 +52,7 @@ export default function RedirectToWhatsApp() {
     const handleVisibilityChange = () => {
       if (!eventFired && document.visibilityState === "hidden") {
         whatsappOpened = true;
-        fireCompleteRegistration();
+        fireContactEvent(); // 👈 fire Contact event here
         eventFired = true;
       }
     };
