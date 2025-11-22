@@ -8,8 +8,8 @@ import { FaWhatsapp } from "react-icons/fa";
 export default function JoinWhatsAppClassPage() {
   const [loading, setLoading] = useState(false);
 
-  const whatsappDeepLink = "whatsapp://chat?code=HQGJ3C3o5vf9jyItAlHZd6";
-  const whatsappFallback = "https://chat.whatsapp.com/HQGJ3C3o5vf9jyItAlHZd6";
+  const whatsappDeepLink = "whatsapp://chat?code=BH7PE8QHoxn6BgSKBR4q7D";
+  const whatsappFallback = "https://chat.whatsapp.com/BH7PE8QHoxn6BgSKBR4q7D";
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/tiktok-event`;
 
   const handleClick = async () => {
