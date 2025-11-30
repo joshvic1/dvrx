@@ -15,59 +15,48 @@ export default function JoinWhatsAppClassPage() {
   const handleClick = async () => {
     setLoading(true);
 
-    const ua = navigator.userAgent || "";
-    const isTikTokBrowser = /tiktok/i.test(ua);
+    // Redirect with browser escape
+    const ua = navigator.userAgent.toLowerCase();
+    const isTikTokBrowser =
+      ua.includes("tiktok") || ua.includes("bytedance") || ua.includes("aweme");
 
-    // Ensure user has external_id
-    let externalId = localStorage.getItem("external_id");
-    if (!externalId) {
-      externalId = uuidv4();
-      localStorage.setItem("external_id", externalId);
-    }
+    const isAndroid = /android/i.test(ua);
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
 
-    // ✅ FIRE ONLY CLICK BUTTON (PIXEL)
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.identify({ external_id: externalId });
+    if (isTikTokBrowser) {
+      if (isAndroid) {
+        // 🚀 Force open Chrome
+        const chromeIntent = `intent://${whatsappFallback.replace(
+          "https://",
+          ""
+        )}#Intent;package=com.android.chrome;scheme=https;end`;
 
-      window.ttq.track("ClickButton", {
-        contents: [
-          {
-            content_id: "whatsapp_join_cta",
-            content_type: "product",
-            content_name: "Join WhatsApp Class CTA",
-          },
-        ],
-        value: 10,
-        currency: "NGN",
-        description: "User clicked Join WhatsApp Class button",
-        event_time: Math.floor(Date.now() / 1000),
-        url: window.location.href,
-      });
-    }
+        window.location.href = chromeIntent;
 
-    // ✅ SEND CLICK BUTTON TO BACKEND ONLY
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "ClickButton",
-        external_id: externalId,
-        content_id: "whatsapp_join_cta",
-        content_type: "product",
-        content_name: "Join WhatsApp Class CTA",
-        value: 10,
-        currency: "NGN",
-        event_time: Math.floor(Date.now() / 1000),
-        url: typeof window !== "undefined" ? window.location.href : "",
-      }),
-    }).catch(() => {});
+        // fallback
+        setTimeout(() => {
+          window.location.href = whatsappFallback;
+        }, 500);
+      } else if (isIOS) {
+        // 🚀 Force open Safari
+        const safariEscape = `googlechrome://${whatsappFallback.replace(
+          "https://",
+          ""
+        )}`;
 
-    // Redirect
-    if (!isTikTokBrowser) {
+        window.location.href = safariEscape;
+
+        // fallback
+        setTimeout(() => {
+          window.location.href = whatsappFallback;
+        }, 600);
+      } else {
+        window.location.href = whatsappFallback;
+      }
+    } else {
+      // Normal browsers (not TikTok)
       window.location.href = whatsappDeepLink;
       setTimeout(() => (window.location.href = whatsappFallback), 800);
-    } else {
-      window.location.href = whatsappFallback;
     }
   };
 
