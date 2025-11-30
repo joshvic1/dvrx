@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function RedirectToWhatsApp() {
-  const whatsappDeepLink = "whatsapp://chat?code=Ks3AzS6VNPOBnWz2P6q5wz";
-  const whatsappFallback = "https://chat.whatsapp.com/Ks3AzS6VNPOBnWz2P6q5wz";
+  const whatsappDeepLink = "whatsapp://chat?code=IZOTdPjFjniHHGb1YGp9NH";
+  const whatsappFallback = "https://chat.whatsapp.com/IZOTdPjFjniHHGb1YGp9NH";
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
