@@ -15,17 +15,25 @@ export default function JoinWhatsAppClassPage() {
   const handleClick = async () => {
     setLoading(true);
 
-    // Redirect with browser escape
+    /* =====================================================
+       DEVICE + TIKTOK BROWSER DETECTION
+    ====================================================== */
     const ua = navigator.userAgent.toLowerCase();
     const isTikTokBrowser =
-      ua.includes("tiktok") || ua.includes("bytedance") || ua.includes("aweme");
+      ua.includes("tiktok") ||
+      ua.includes("bytedance") ||
+      ua.includes("aweme") ||
+      ua.includes("musically");
 
     const isAndroid = /android/i.test(ua);
     const isIOS = /iphone|ipad|ipod/i.test(ua);
 
+    /* =====================================================
+        REDIRECT LOGIC — ESCAPE TIKTOK BROWSER
+    ====================================================== */
     if (isTikTokBrowser) {
       if (isAndroid) {
-        // 🚀 Force open Chrome
+        // 🚀 Force Chrome open on Android
         const chromeIntent = `intent://${whatsappFallback.replace(
           "https://",
           ""
@@ -33,12 +41,12 @@ export default function JoinWhatsAppClassPage() {
 
         window.location.href = chromeIntent;
 
-        // fallback
+        // fallback if blocked
         setTimeout(() => {
           window.location.href = whatsappFallback;
         }, 500);
       } else if (isIOS) {
-        // 🚀 Force open Safari
+        // 🚀 Force Safari open on iOS
         const safariEscape = `googlechrome://${whatsappFallback.replace(
           "https://",
           ""
@@ -46,23 +54,27 @@ export default function JoinWhatsAppClassPage() {
 
         window.location.href = safariEscape;
 
-        // fallback
+        // fallback if needed
         setTimeout(() => {
           window.location.href = whatsappFallback;
         }, 600);
       } else {
+        // Unknown device but still TikTok browser
         window.location.href = whatsappFallback;
       }
     } else {
-      // Normal browsers (not TikTok)
+      // Normal browser — open WhatsApp directly
       window.location.href = whatsappDeepLink;
-      setTimeout(() => (window.location.href = whatsappFallback), 800);
+
+      setTimeout(() => {
+        window.location.href = whatsappFallback;
+      }, 800);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#ECE5DD] flex flex-col items-center justify-center px-4 py-10 relative overflow-hidden">
-      {/* Decorative background bubbles */}
+      {/* Decorative bubbles */}
       <div className="pointer-events-none absolute -top-10 -left-10 w-72 h-72 rounded-full bg-green-300/30 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-emerald-300/30 blur-3xl" />
 
@@ -100,7 +112,6 @@ export default function JoinWhatsAppClassPage() {
             Yes, I’m ready to join the WhatsApp group ✅
           </motion.div>
 
-          {/* Typing indicator */}
           {!loading && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -120,9 +131,6 @@ export default function JoinWhatsAppClassPage() {
           onClick={handleClick}
           whileTap={{ scale: 0.95 }}
           className="mt-6 w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-bold py-3 rounded-lg shadow-md flex items-center justify-center gap-2 text-lg"
-          data-tt-action="click"
-          data-tt-event="ClickButton"
-          data-tt-content-id="whatsapp_join_cta"
         >
           {loading ? (
             "Connecting to WhatsApp..."
