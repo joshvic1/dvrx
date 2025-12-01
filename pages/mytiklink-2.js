@@ -14,15 +14,15 @@ export default function SignUpPage() {
     if (typeof window !== "undefined" && window.ttq) {
       window.ttq.identify({ external_id: externalId });
 
-      window.ttq.track("Contact", {
+      window.ttq.track("ClickButton", {
         contents: [
           {
-            content_id: "mytiklink_signup",
+            content_id: "mytiklink_signup_button",
             content_type: "website",
-            content_name: "User clicked signup button",
+            content_name: "Clicked signup button",
           },
         ],
-        value: 5,
+        value: 1,
         currency: "NGN",
         description: "User clicked signup on MyTikLink",
         event_time: Math.floor(Date.now() / 1000),
