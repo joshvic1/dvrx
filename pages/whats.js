@@ -6,8 +6,8 @@ export default function JoinWhatsAppPage() {
   const [loading, setLoading] = useState(false);
 
   // 👉 Replace with your WhatsApp group invite OR direct chat link
-  const whatsappLink = "https://chat.whatsapp.com/E69tDxNWHdZ37UyuYPUXqn";
-  const whatsappDeepLink = "whatsapp://chat?code=E69tDxNWHdZ37UyuYPUXqn";
+  const whatsappLink = "https://chat.whatsapp.com/CJq6bB2xrQT3W3XfV6IGbF";
+  const whatsappDeepLink = "whatsapp://chat?code=CJq6bB2xrQT3W3XfV6IGbF";
 
   const handleClick = () => {
     setLoading(true);
