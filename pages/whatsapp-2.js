@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function RedirectToWhatsApp() {
   const whatsappDeepLink = "whatsapp://chat?code=CjZMAtRO6l2LuvnvSGq07H";
-  const whatsappFallback = "https://chat.whatsapp.com/CjZMAtRO6l2LuvnvSGq07H";
+  const whatsappFallback = "https://chat.whatsapp.com/KrDhT0RCZUx1PL3JVwbSVq";
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
