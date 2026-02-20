@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 export default function JoinWhatsAppPage() {
   const [loading, setLoading] = useState(false);
 
-  // 👉 Replace with yobdnur WhatsApp group inviteeeee OR dir chat link
+  // 👉 Replace with your WhatsApp group ieeeee OR directddttt chat link
   const whatsappLink = "https://chat.whatsapp.com/DC5rLj3Mg9q480DaOElkEu";
   const whatsappDeepLink = "whatsapp://chat?code=DC5rLj3Mg9q480DaOElkEu";
 
