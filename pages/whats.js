@@ -6,8 +6,8 @@ export default function JoinWhatsAppPage() {
   const [loading, setLoading] = useState(false);
 
   // 👉 Replace with your WhatsApp group ieeeee OR directddttt chat link
-  const whatsappLink = "https://mytiklink.com/r/ehr3bg";
-  const whatsappDeepLink = "https://mytiklink.com/r/ehr3bg";
+  const whatsappLink = "whatsapp://chat?code=D2Ws6MXqWGBG2s4rXiPolI";
+  const whatsappDeepLink = "whatsapp://chat?code=D2Ws6MXqWGBG2s4rXiPolI";
   const handleClick = () => {
     setLoading(true);
 
